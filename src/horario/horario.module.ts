@@ -1,0 +1,18 @@
+import { AuthModule } from './../auth/auth.module';
+import { forwardRef, Module } from '@nestjs/common';
+import { HorarioService } from './horario.service';
+import { HorarioController } from './horario.controller';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Horario } from './entities/horario.entity';
+import { Aula } from '../aula/entities/aula.entity';
+import { BoletaHorario } from '../boleta-horario/entities/boleta-horario.entity';
+
+@Module({
+  imports: [
+    TypeOrmModule.forFeature([Horario, Aula, BoletaHorario]),forwardRef(() => AuthModule),
+  ],
+  controllers: [HorarioController],
+  providers: [HorarioService],
+  exports: [HorarioService],
+})
+export class HorarioModule {}

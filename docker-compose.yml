@@ -1,0 +1,36 @@
+services:
+  # Microservicio Academic Service
+  academic-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development  # Usar etapa de desarrollo
+    container_name: academic-service
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=development
+      - DATABASE_HOST=${DATABASE_HOST}
+      - DATABASE_PORT=${DATABASE_PORT}
+      - DATABASE_USER=${DATABASE_USER}
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+      - DATABASE_NAME=${DATABASE_NAME}
+      - DATABASE_SSL=${DATABASE_SSL}
+      - DATABASE_URL=${DATABASE_URL}  # URL completa de Render
+      - PORT=3000
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app                    # Bind mount para desarrollo
+      - /app/node_modules         # Volumen anónimo para node_modules
+    networks:
+      - academic-network
+    command: yarn start:dev
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+networks:
+  academic-network:
+    driver: bridge
