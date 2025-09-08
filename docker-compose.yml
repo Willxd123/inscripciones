@@ -1,10 +1,15 @@
+version: '3.8'
+
 services:
   # Microservicio Academic Service
   academic-service:
     build:
       context: .
       dockerfile: Dockerfile
-      target: development  # Usar etapa de desarrollo
+      target: development
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
     container_name: academic-service
     restart: unless-stopped
     environment:
@@ -15,21 +20,56 @@ services:
       - DATABASE_PASSWORD=${DATABASE_PASSWORD}
       - DATABASE_NAME=${DATABASE_NAME}
       - DATABASE_SSL=${DATABASE_SSL}
-      - DATABASE_URL=${DATABASE_URL}  # URL completa de Render
+      - DATABASE_URL=${DATABASE_URL}
+      - JWT_SECRET=${JWT_SECRET}
       - PORT=3000
+      # Variables RabbitMQ para Docker (usar nombre del servicio)
+      - RABBITMQ_URL=amqp://admin:admin123@rabbitmq:5672/academic
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_USER=admin
+      - RABBITMQ_PASS=admin123
+      - RABBITMQ_VHOST=academic
     ports:
       - "3000:3000"
     volumes:
-      - .:/app                    # Bind mount para desarrollo
-      - /app/node_modules         # Volumen anónimo para node_modules
+      - .:/app
+      - /app/node_modules
     networks:
       - academic-network
     command: yarn start:dev
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000/api"]
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/api/health"]
       interval: 30s
       timeout: 10s
+      retries: 5
+      start_period: 40s
+
+  rabbitmq:
+    image: rabbitmq:3.12-management
+    container_name: rabbitmq
+    restart: unless-stopped
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: admin123
+      RABBITMQ_DEFAULT_VHOST: academic
+      RABBITMQ_ERLANG_COOKIE: "academic_cookie"
+    ports:
+      - "5672:5672"    # AMQP port
+      - "15672:15672"  # Management UI
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - academic-network
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 30s
+      timeout: 30s
       retries: 3
+      start_period: 60s
+
+volumes:
+  rabbitmq_data:
 
 networks:
   academic-network:

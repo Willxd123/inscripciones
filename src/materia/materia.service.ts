@@ -19,14 +19,14 @@ export class MateriaService {
 
   findAll() {
     return this.materiaRepository.find({ 
-      relations: ['nivel', 'prerequisitos', 'esPrerequisitoDe', 'gruposMateria'] 
+      relations: ['nivel', 'nivel.plan', 'nivel.plan.carrera', 'prerequisitos', 'esPrerequisitoDe', 'gruposMateria'] 
     });
   }
 
   findOne(id: number) {
     return this.materiaRepository.findOne({ 
       where: { id }, 
-      relations: ['nivel', 'prerequisitos', 'esPrerequisitoDe', 'gruposMateria'] 
+      relations: ['nivel', 'nivel.plan', 'nivel.plan.carrera', 'prerequisitos', 'esPrerequisitoDe', 'gruposMateria'] 
     });
   }
 

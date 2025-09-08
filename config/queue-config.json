@@ -1,0 +1,28 @@
+{
+  "services": {
+    "carrera": {
+      "enabled": true,
+      "operations": [
+        "create",
+        "update",
+        "delete",
+        "findAll",
+        "findOne"
+      ],
+      "workers": 3
+    },
+    "estudiante": {
+      "enabled": true,
+      "operations": [
+        "findAll",
+        "findOne"
+      ],
+      "workers": 1
+    },
+    "materia": {
+      "enabled": false,
+      "operations": [],
+      "workers": 0
+    }
+  }
+}

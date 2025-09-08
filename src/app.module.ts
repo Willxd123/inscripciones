@@ -1,3 +1,6 @@
+import { QueueConsumer } from './workers/queue.consumer';
+import { WorkersModule } from './workers/workers.module';
+import { QueueModule } from './queues/queue.module';
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -23,6 +26,7 @@ import { BoletaHorarioModule } from './boleta-horario/boleta-horario.module';
 import { DetalleModule } from './detalle/detalle.module';
 import { SeedModule } from './seeders/seed.module';
 import { AuthModule } from './auth/auth.module';
+
 
 @Module({
   imports: [
@@ -69,9 +73,11 @@ import { AuthModule } from './auth/auth.module';
     BoletaHorarioModule,
     DetalleModule,
     SeedModule,
-    AuthModule
+    AuthModule,
+    QueueModule,
+    WorkersModule
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, QueueConsumer],
 })
 export class AppModule {}

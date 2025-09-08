@@ -18,13 +18,13 @@ export class AulaService {
   }
 
   findAll() {
-    return this.aulaRepository.find({ relations: ['modulos', 'horarios'] });
+    return this.aulaRepository.find({ relations: ['modulo', 'horarios'] }); 
   }
-
+  
   findOne(id: number) {
     return this.aulaRepository.findOne({ 
       where: { id }, 
-      relations: ['modulos', 'horarios'] 
+      relations: ['modulo', 'horarios'] 
     });
   }
 

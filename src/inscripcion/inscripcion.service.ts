@@ -18,13 +18,33 @@ export class InscripcionService {
   }
 
   findAll() {
-    return this.inscripcionRepository.find({ relations: ['estudiante', 'detalles'] });
+    return this.inscripcionRepository.find({
+      relations: [
+        'estudiante',
+        'detalles',
+        'detalles.grupoMateria',
+        'detalles.grupoMateria.materia',
+        'detalles.grupoMateria.grupo',
+        'detalles.grupoMateria.docente',
+        'detalles.grupoMateria.periodo',
+        'detalles.grupoMateria.periodo.gestion',
+      ],
+    });
   }
 
   findOne(id: number) {
-    return this.inscripcionRepository.findOne({ 
-      where: { id }, 
-      relations: ['estudiante', 'detalles'] 
+    return this.inscripcionRepository.findOne({
+      where: { id },
+      relations: [
+        'estudiante',
+        'detalles',
+        'detalles.grupoMateria',
+        'detalles.grupoMateria.materia',
+        'detalles.grupoMateria.grupo',
+        'detalles.grupoMateria.docente',
+        'detalles.grupoMateria.periodo',
+        'detalles.grupoMateria.periodo.gestion',
+      ],
     });
   }
 
