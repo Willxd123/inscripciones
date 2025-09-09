@@ -13,49 +13,10 @@ async function bootstrap() {
     const app = await NestFactory.create(AppModule);
     console.log('✅ HTTP Application created');
 
-    // CREAR MICROSERVICIO EN EL MISMO PROCESO (para desarrollo local)
-    if (process.env.NODE_ENV === 'development') {
-      console.log('🔧 Creating microservice for local development...');
-      
-      const microservice = await NestFactory.createMicroservice<MicroserviceOptions>(
-        MicroserviceModule,
-        {
-          transport: Transport.RMQ,
-          options: {
-            urls: [
-              process.env.RABBITMQ_URL ||
-                'amqp://admin:admin123@localhost:5672/academic',
-            ],
-            queue: 'academic_queue',
-            queueOptions: {
-              durable: true,
-            },
-          },
-        },
-      );
+    // Inicia worker BullMQ
+    const { startCarreraWorker } = await import('./queues/carrera.processor');
+    startCarreraWorker();
 
-      console.log('✅ Microservice created for local development');
-      
-      // INICIAR MICROSERVICIO
-      await microservice.listen();
-      console.log('🔄 Microservice started - RabbitMQ consumer active');
-    }
-
-    // Configurar aplicación HTTP
-    app.setGlobalPrefix('api');
-    app.enableCors({
-      origin: '*',
-      methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-      credentials: true,
-    });
-
-    app.useGlobalPipes(
-      new ValidationPipe({
-        whitelist: true,
-        forbidNonWhitelisted: true,
-        transform: true,
-      }),
-    );
 
     // Swagger
     const config = new DocumentBuilder()

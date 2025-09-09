@@ -21,12 +21,12 @@ export class InscripcionService {
     return this.inscripcionRepository.find({
       relations: [
         'estudiante',
-        'detalles.grupoMateria',
-        'detalles.grupoMateria.materia',
-        'detalles.grupoMateria.grupo',
-        'detalles.grupoMateria.docente',
-        'detalles.grupoMateria.periodo',
-        'detalles.grupoMateria.periodo.gestion',
+        'grupoMateria',
+        'grupoMateria.materia',
+        'grupoMateria.grupo',
+        'grupoMateria.docente',
+        'grupoMateria.periodo',
+        'grupoMateria.periodo.gestion',
       ],
     });
   }
@@ -36,13 +36,12 @@ export class InscripcionService {
       where: { id },
       relations: [
         'estudiante',
-        'detalles',
-        'detalles.grupoMateria',
-        'detalles.grupoMateria.materia',
-        'detalles.grupoMateria.grupo',
-        'detalles.grupoMateria.docente',
-        'detalles.grupoMateria.periodo',
-        'detalles.grupoMateria.periodo.gestion',
+        'grupoMateria',
+        'grupoMateria.materia',
+        'grupoMateria.grupo',
+        'grupoMateria.docente',
+        'grupoMateria.periodo',
+        'grupoMateria.periodo.gestion',
       ],
     });
   }

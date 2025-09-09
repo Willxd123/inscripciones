@@ -9,33 +9,34 @@ import {
   Delete,
   UseGuards,
   Query,
+  Inject,
 } from '@nestjs/common';
 import { CarreraService } from './carrera.service';
 import { CreateCarreraDto } from './dto/create-carrera.dto';
 import { UpdateCarreraDto } from './dto/update-carrera.dto';
 import { ApiBearerAuth } from '@nestjs/swagger';
-import { AsyncWrapperService } from '../queues/async-wrapper.service';
+
+import { Queue } from 'bullmq';
 
 @Controller('carrera')
 @UseGuards(AuthGuard)
 @ApiBearerAuth()
 export class CarreraController {
   constructor(
+    @Inject('CARRERA_QUEUE') private readonly carreraQueue: Queue,
     private readonly carreraService: CarreraService,
-    private readonly asyncWrapper: AsyncWrapperService,
   ) {}
 
   @Post()
-  async create(@Body() createCarreraDto: CreateCarreraDto) {
-    return this.asyncWrapper.executeOrQueue(
-      'carrera',
-      'create',
-      createCarreraDto,
-      () => this.carreraService.create(createCarreraDto),
-    );
+  async create(@Body() dto: CreateCarreraDto) {
+    const job = await this.carreraQueue.add('create', dto);
+    return {
+      message: '✅ Carrera encolada, se procesará en segundo plano',
+      jobId: job.id,
+    };
   }
 
-  @Get()
+  /*@Get()
   async findAll(@Query('force_sync') forceSync?: string) {
     // Si se fuerza modo sync, ejecutar directamente
     if (forceSync === 'true') {
@@ -99,5 +100,5 @@ export class CarreraController {
       { id: +id },
       () => this.carreraService.remove(+id),
     );
-  }
+  }*/
 }

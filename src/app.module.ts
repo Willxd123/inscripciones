@@ -1,5 +1,3 @@
-import { QueueConsumer } from './workers/queue.consumer';
-import { WorkersModule } from './workers/workers.module';
 import { QueueModule } from './queues/queue.module';
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
@@ -73,9 +71,8 @@ import { AuthModule } from './auth/auth.module';
     SeedModule,
     AuthModule,
     QueueModule,
-    WorkersModule
   ],
   controllers: [AppController],
-  providers: [AppService, QueueConsumer],
+  providers: [AppService],
 })
 export class AppModule {}
