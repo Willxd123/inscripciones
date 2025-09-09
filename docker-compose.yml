@@ -1,15 +1,10 @@
-version: '3.8'
-
 services:
   # Microservicio Academic Service
   academic-service:
     build:
       context: .
       dockerfile: Dockerfile
-      target: development
-    depends_on:
-      rabbitmq:
-        condition: service_healthy
+      target: development  # Usar etapa de desarrollo
     container_name: academic-service
     restart: unless-stopped
     environment:
@@ -20,56 +15,49 @@ services:
       - DATABASE_PASSWORD=${DATABASE_PASSWORD}
       - DATABASE_NAME=${DATABASE_NAME}
       - DATABASE_SSL=${DATABASE_SSL}
-      - DATABASE_URL=${DATABASE_URL}
-      - JWT_SECRET=${JWT_SECRET}
+      - DATABASE_URL=${DATABASE_URL}  # URL completa de Render
       - PORT=3000
-      # Variables RabbitMQ para Docker (usar nombre del servicio)
-      - RABBITMQ_URL=amqp://admin:admin123@rabbitmq:5672/academic
-      - RABBITMQ_HOST=rabbitmq
-      - RABBITMQ_PORT=5672
-      - RABBITMQ_USER=admin
-      - RABBITMQ_PASS=admin123
-      - RABBITMQ_VHOST=academic
+      # Redis configuration
+      - REDIS_HOST=redis-academic
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=
     ports:
       - "3000:3000"
     volumes:
-      - .:/app
-      - /app/node_modules
+      - .:/app                    # Bind mount para desarrollo
+      - /app/node_modules         # Volumen anónimo para node_modules
     networks:
       - academic-network
+    depends_on:
+      - redis-academic
     command: yarn start:dev
     healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/api/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api"]
       interval: 30s
       timeout: 10s
-      retries: 5
-      start_period: 40s
+      retries: 3
 
-  rabbitmq:
-    image: rabbitmq:3.12-management
-    container_name: rabbitmq
+  # Redis para las colas
+  redis-academic:
+    image: redis:7-alpine
+    container_name: redis-academic
     restart: unless-stopped
-    environment:
-      RABBITMQ_DEFAULT_USER: admin
-      RABBITMQ_DEFAULT_PASS: admin123
-      RABBITMQ_DEFAULT_VHOST: academic
-      RABBITMQ_ERLANG_COOKIE: "academic_cookie"
     ports:
-      - "5672:5672"    # AMQP port
-      - "15672:15672"  # Management UI
+      - "6379:6379"
     volumes:
-      - rabbitmq_data:/var/lib/rabbitmq
+      - redis-data:/data
     networks:
       - academic-network
+    command: redis-server --appendonly yes
     healthcheck:
-      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
-      interval: 30s
-      timeout: 30s
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
       retries: 3
-      start_period: 60s
 
 volumes:
-  rabbitmq_data:
+  redis-data:
+    driver: local
 
 networks:
   academic-network:
