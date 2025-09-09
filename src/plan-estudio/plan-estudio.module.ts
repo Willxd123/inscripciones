@@ -9,7 +9,7 @@ import { Nivel } from '../nivel/entities/nivel.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([PlanEstudio, Carrera, Nivel]),forwardRef(() => AuthModule),
+    TypeOrmModule.forFeature([PlanEstudio, Carrera]),forwardRef(() => AuthModule),
   ],
   controllers: [PlanEstudioController],
   providers: [PlanEstudioService],

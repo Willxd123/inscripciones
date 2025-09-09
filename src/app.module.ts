@@ -1,11 +1,11 @@
-import { QueueConsumer } from './workers/queue.consumer';
-import { WorkersModule } from './workers/workers.module';
-import { QueueModule } from './queues/queue.module';
+import { CarreraQueueModule } from './queue/carrera-queue.module';
+import { QueueModule } from './queue/queue.module';
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
+import { BullModule } from '@nestjs/bull';
 import { CarreraModule } from './carrera/carrera.module';
 import { PlanEstudioModule } from './plan-estudio/plan-estudio.module';
 import { NivelModule } from './nivel/nivel.module';
@@ -26,11 +26,28 @@ import { BoletaHorarioModule } from './boleta-horario/boleta-horario.module';
 import { SeedModule } from './seeders/seed.module';
 import { AuthModule } from './auth/auth.module';
 
-
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
+    }),
+    // Configuración de Bull para colas
+    BullModule.forRoot({
+      redis: {
+        host: process.env.REDIS_HOST || 'localhost',
+        port: parseInt(process.env.REDIS_PORT || '6379', 10),
+        password: process.env.REDIS_PASSWORD || undefined,
+        db: parseInt(process.env.REDIS_DB || '0', 10),
+      },
+      defaultJobOptions: {
+        attempts: parseInt(process.env.QUEUE_DEFAULT_ATTEMPTS || '3', 10),
+        backoff: {
+          type: 'exponential',
+          delay: parseInt(process.env.QUEUE_DEFAULT_DELAY || '1000', 10),
+        },
+        removeOnComplete: 50, // Mantener últimos 50 trabajos completados
+        removeOnFail: 100,    // Mantener últimos 100 trabajos fallidos
+      },
     }),
     TypeOrmModule.forRoot({
       type: 'postgres',
@@ -73,9 +90,9 @@ import { AuthModule } from './auth/auth.module';
     SeedModule,
     AuthModule,
     QueueModule,
-    WorkersModule
+    CarreraQueueModule
   ],
   controllers: [AppController],
-  providers: [AppService, QueueConsumer],
+  providers: [AppService],
 })
 export class AppModule {}
