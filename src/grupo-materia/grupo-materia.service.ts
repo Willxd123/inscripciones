@@ -19,14 +19,14 @@ export class GrupoMateriaService {
 
   findAll() {
     return this.grupoMateriaRepository.find({ 
-      relations: ['materia', 'docente', 'grupo', 'periodo', 'boletahorarios', 'detalles', 'notas'] 
+      relations: ['materia', 'docente', 'grupo', 'periodo', 'boletahorarios', 'notas'] 
     });
   }
 
   findOne(id: number) {
     return this.grupoMateriaRepository.findOne({ 
       where: { id }, 
-      relations: ['materia', 'docente', 'grupo', 'periodo', 'boletahorarios', 'detalles', 'notas'] 
+      relations: ['materia', 'docente', 'grupo', 'periodo', 'boletahorarios', 'notas'] 
     });
   }
 

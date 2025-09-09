@@ -21,7 +21,6 @@ export class InscripcionService {
     return this.inscripcionRepository.find({
       relations: [
         'estudiante',
-        'detalles',
         'detalles.grupoMateria',
         'detalles.grupoMateria.materia',
         'detalles.grupoMateria.grupo',

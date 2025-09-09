@@ -1,6 +1,8 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, OneToOne } from 'typeorm';
 import { Inscripcion } from '../../inscripcion/entities/inscripcion.entity';
 import { Nota } from '../../nota/entities/nota.entity';
+import { on } from 'events';
+import { PlanEstudio } from 'src/plan-estudio/entities/plan-estudio.entity';
 
 @Entity({ name: 'estudiante' })
 export class Estudiante {
@@ -27,4 +29,7 @@ export class Estudiante {
 
   @OneToMany(() => Nota, (n) => n.estudiante)
   notas: Nota[];
+
+  @OneToOne(() => PlanEstudio, (p) => p.estudiantes, { onDelete: 'SET NULL' })
+  planEstudio: PlanEstudio | null;
 }

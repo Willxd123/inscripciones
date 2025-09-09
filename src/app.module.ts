@@ -23,7 +23,6 @@ import { NotaModule } from './nota/nota.module';
 import { PeriodoModule } from './periodo/periodo.module';
 import { GestionModule } from './gestion/gestion.module';
 import { BoletaHorarioModule } from './boleta-horario/boleta-horario.module';
-import { DetalleModule } from './detalle/detalle.module';
 import { SeedModule } from './seeders/seed.module';
 import { AuthModule } from './auth/auth.module';
 
@@ -71,7 +70,6 @@ import { AuthModule } from './auth/auth.module';
     PeriodoModule,
     GestionModule,
     BoletaHorarioModule,
-    DetalleModule,
     SeedModule,
     AuthModule,
     QueueModule,
