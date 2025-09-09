@@ -12,6 +12,6 @@ export class Modulo {
   @Column({ length: 30 })
   codigo: string;
 
-  @OneToMany(() => Aula, (a) => a.modulo) // Cambiar relación
+  @OneToMany(() => Aula, (a) => a.modulo)
   aulas: Aula[];
 }

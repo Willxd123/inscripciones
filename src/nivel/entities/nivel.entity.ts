@@ -10,10 +10,6 @@ export class Nivel {
   @Column({ type: 'int' })
   numero: number;
 
-  @ManyToOne(() => PlanEstudio, (p) => p.niveles, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'plan_estudio_id' })
-  plan: PlanEstudio;
-
   @OneToMany(() => Materia, (m) => m.nivel)
   materias: Materia[];
 }

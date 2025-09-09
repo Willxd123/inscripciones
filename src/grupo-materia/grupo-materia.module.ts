@@ -9,7 +9,6 @@ import { Docente } from '../docente/entities/docente.entity';
 import { Grupo } from '../grupo/entities/grupo.entity';
 import { Periodo } from '../periodo/entities/periodo.entity';
 import { BoletaHorario } from '../boleta-horario/entities/boleta-horario.entity';
-import { Detalle } from '../detalle/entities/detalle.entity';
 import { Nota } from '../nota/entities/nota.entity';
 
 @Module({
@@ -21,7 +20,6 @@ import { Nota } from '../nota/entities/nota.entity';
       Grupo, 
       Periodo, 
       BoletaHorario, 
-      Detalle, 
       Nota
     ]),forwardRef(() => AuthModule),
   ],

@@ -17,7 +17,6 @@ import { Periodo } from '../periodo/entities/periodo.entity';
 import { Estudiante } from '../estudiante/entities/estudiante.entity';
 import { GrupoMateria } from '../grupo-materia/entities/grupo-materia.entity';
 import { Inscripcion } from '../inscripcion/entities/inscripcion.entity';
-import { Detalle } from '../detalle/entities/detalle.entity';
 import { BoletaHorario } from '../boleta-horario/entities/boleta-horario.entity';
 import { Nota } from '../nota/entities/nota.entity';
 
@@ -26,7 +25,7 @@ import { Nota } from '../nota/entities/nota.entity';
     TypeOrmModule.forFeature([
       Carrera, PlanEstudio, Nivel, Materia, Prerequisito, Grupo,
       Docente, Aula, Modulo, Horario, Gestion, Periodo, Estudiante,
-      GrupoMateria, Inscripcion, Detalle, BoletaHorario, Nota
+      GrupoMateria, Inscripcion, BoletaHorario, Nota
     ]),
   ],
   providers: [SeedService],

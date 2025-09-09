@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, CreateDateColumn, JoinColumn } from 'typeorm';
 import { Estudiante } from '../../estudiante/entities/estudiante.entity';
-import { Detalle } from 'src/detalle/entities/detalle.entity';
+import { GrupoMateria } from 'src/grupo-materia/entities/grupo-materia.entity';
 
 @Entity({ name: 'inscripcion' })
 export class Inscripcion {
@@ -14,6 +14,9 @@ export class Inscripcion {
   @JoinColumn({ name: 'estudiante_id' })
   estudiante: Estudiante;
 
-  @OneToMany(() => Detalle, (d) => d.inscripcion) 
-  detalles: Detalle[];
+  @ManyToOne(() => GrupoMateria, (gm) => gm.inscripciones, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'grupo_materia_id' })
+  grupoMateria: GrupoMateria;
+
+
 }
