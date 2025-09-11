@@ -1,19 +1,22 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { QueueConfig } from './entities/queue-config.entity';
-import Redis from 'ioredis';
-import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
+import { InjectQueue } from '@nestjs/bull';
+import { GENERIC_QUEUE } from './generic-queue.processor';
+import Redis from 'ioredis';
+
 @Injectable()
-export class QueueConfigService {
+export class QueueConfigService implements OnModuleInit {
   private redis: Redis;
+  private queueRegistry: Map<string, Queue> = new Map();
+  private readonly logger = new Logger(QueueConfigService.name);
 
   constructor(
     @InjectRepository(QueueConfig)
     private readonly queueConfigRepository: Repository<QueueConfig>,
-    @InjectQueue('carrera-queue')
-    private readonly carreraQueue: Queue,
+    @InjectQueue(GENERIC_QUEUE) private readonly genericQueue: Queue,
   ) {
     // Conexión a Redis usando las variables de entorno
     this.redis = new Redis({
@@ -24,10 +27,30 @@ export class QueueConfigService {
     });
   }
 
+  onModuleInit() {
+    // Registrar la cola genérica para todos los servicios
+    this.registerGenericQueue();
+  }
+
+  // Registrar la cola genérica para cualquier servicio
+  private registerGenericQueue(): void {
+    // Todos los servicios usarán la misma cola genérica
+    // No necesitamos registrar colas específicas por servicio
+    this.logger.log('Cola genérica registrada para todos los servicios');
+  }
+
+  // Registrar una cola para un servicio (mantenemos compatibilidad)
+  registerQueue(serviceName: string, queue: Queue): void {
+    this.queueRegistry.set(serviceName, queue);
+  }
+
+  // Obtener cola de un servicio - ahora siempre devuelve la cola genérica
+  private getQueueForService(serviceName: string): Queue | null {
+    return this.genericQueue;
+  }
+
   // Obtener configuración de un servicio
-  async getServiceConfig(
-    serviceName: string,
-  ): Promise<{ useQueue: boolean; isPaused: boolean }> {
+  async getServiceConfig(serviceName: string): Promise<{ useQueue: boolean; isPaused: boolean }> {
     // Buscar en BD si usa colas
     let config = await this.queueConfigRepository.findOne({
       where: { serviceName },
@@ -52,34 +75,31 @@ export class QueueConfigService {
   }
 
   // Cambiar modo de un servicio (síncrono ↔ asíncrono)
-  async setServiceQueueMode(
-    serviceName: string,
-    useQueue: boolean,
-  ): Promise<void> {
-    await this.queueConfigRepository.upsert({ serviceName, useQueue }, [
-      'serviceName',
-    ]);
+  async setServiceQueueMode(serviceName: string, useQueue: boolean): Promise<void> {
+    await this.queueConfigRepository.upsert({ serviceName, useQueue }, ['serviceName']);
   }
 
-  // Pausar cola de un servicio
+  // Pausar cola de un servicio (GENÉRICO)
   async pauseQueue(serviceName: string): Promise<void> {
     const key = `queue:${serviceName}:paused`;
     await this.redis.set(key, 'true');
 
-    // Pausar la cola real de Bull
-    if (serviceName === 'carrera') {
-      await this.carreraQueue.pause();
+    // Pausar la cola real de Bull (genérico)
+    const queue = this.getQueueForService(serviceName);
+    if (queue) {
+      await queue.pause();
     }
   }
 
-  // Reanudar cola de un servicio
+  // Reanudar cola de un servicio (GENÉRICO)
   async resumeQueue(serviceName: string): Promise<void> {
     const key = `queue:${serviceName}:paused`;
     await this.redis.del(key);
 
-    // Reanudar la cola real de Bull
-    if (serviceName === 'carrera') {
-      await this.carreraQueue.resume();
+    // Reanudar la cola real de Bull (genérico)
+    const queue = this.getQueueForService(serviceName);
+    if (queue) {
+      await queue.resume();
     }
   }
 
@@ -91,16 +111,10 @@ export class QueueConfigService {
   }
 
   // Listar todos los servicios y su configuración
-  async getAllServicesConfig(): Promise<
-    Array<{ serviceName: string; useQueue: boolean; isPaused: boolean }>
-  > {
+  async getAllServicesConfig(): Promise<Array<{ serviceName: string; useQueue: boolean; isPaused: boolean }>> {
     const configs = await this.queueConfigRepository.find();
 
-    const result: Array<{
-      serviceName: string;
-      useQueue: boolean;
-      isPaused: boolean;
-    }> = [];
+    const result: Array<{ serviceName: string; useQueue: boolean; isPaused: boolean }> = [];
     for (const config of configs) {
       const isPaused = await this.isQueuePaused(config.serviceName);
       result.push({
@@ -124,5 +138,10 @@ export class QueueConfigService {
   async shouldProcessQueue(serviceName: string): Promise<boolean> {
     const config = await this.getServiceConfig(serviceName);
     return config.useQueue && !config.isPaused;
+  }
+
+  // Obtener lista de servicios registrados
+  getRegisteredServices(): string[] {
+    return Array.from(this.queueRegistry.keys());
   }
 }

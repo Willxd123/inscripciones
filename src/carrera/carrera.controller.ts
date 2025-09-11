@@ -9,7 +9,7 @@ import {
   Delete,
   UseGuards,
 } from '@nestjs/common';
-import { CarreraWrapperService } from '../queue/carrera-wrapper.service';
+import { GenericWrapperService } from '../queue/generic-wrapper.service';
 import { CreateCarreraDto } from './dto/create-carrera.dto';
 import { UpdateCarreraDto } from './dto/update-carrera.dto';
 import { ApiBearerAuth } from '@nestjs/swagger';
@@ -18,30 +18,35 @@ import { ApiBearerAuth } from '@nestjs/swagger';
 @UseGuards(AuthGuard)
 @ApiBearerAuth()
 export class CarreraController {
-  constructor(private readonly carreraWrapperService: CarreraWrapperService) {}
+  private carreraWrapper: any;
+
+  constructor(private readonly genericWrapperService: GenericWrapperService) {
+    // Crear wrapper específico para carrera usando el factory genérico
+    this.carreraWrapper = this.genericWrapperService.createServiceWrapper('carrera');
+  }
 
   @Post()
   create(@Body() createCarreraDto: CreateCarreraDto) {
-    return this.carreraWrapperService.create(createCarreraDto);
+    return this.carreraWrapper.create(createCarreraDto);
   }
 
   @Get()
   findAll() {
-    return this.carreraWrapperService.findAll();
+    return this.carreraWrapper.findAll();
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.carreraWrapperService.findOne(+id);
+    return this.carreraWrapper.findOne(+id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateCarreraDto: UpdateCarreraDto) {
-    return this.carreraWrapperService.update(+id, updateCarreraDto);
+    return this.carreraWrapper.update(+id, updateCarreraDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.carreraWrapperService.remove(+id);
+    return this.carreraWrapper.remove(+id);
   }
 }

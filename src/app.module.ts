@@ -1,4 +1,3 @@
-import { CarreraQueueModule } from './queue/carrera-queue.module';
 import { QueueModule } from './queue/queue.module';
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
@@ -56,7 +55,7 @@ import { AuthModule } from './auth/auth.module';
       username: process.env.DATABASE_USER || 'topico_user',
       password: process.env.DATABASE_PASSWORD || 'Wu7LtwbqSbQy75NJDEhJOMoZ2smzZW3b',
       database: process.env.DATABASE_NAME || 'topico',
-      autoLoadEntities: true,
+      entities: ['dist/**/*.entity{.ts,.js}'], // Buscar todas las entidades
       synchronize: process.env.NODE_ENV !== 'production',
       // Configuración SSL específica para Render
       ssl: process.env.DATABASE_SSL === 'true' ? {
@@ -89,8 +88,7 @@ import { AuthModule } from './auth/auth.module';
     BoletaHorarioModule,
     SeedModule,
     AuthModule,
-    QueueModule,
-    CarreraQueueModule
+    QueueModule
   ],
   controllers: [AppController],
   providers: [AppService],

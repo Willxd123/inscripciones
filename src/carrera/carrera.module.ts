@@ -4,7 +4,7 @@ import { Module, forwardRef } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Carrera } from './entities/carrera.entity';
 import { CarreraService } from './carrera.service';
-import { CarreraQueueModule } from '../queue/carrera-queue.module';
+import { QueueModule } from '../queue/queue.module';
 
 import { PlanEstudio } from 'src/plan-estudio/entities/plan-estudio.entity';
 
@@ -12,7 +12,7 @@ import { PlanEstudio } from 'src/plan-estudio/entities/plan-estudio.entity';
   imports: [
     TypeOrmModule.forFeature([Carrera, PlanEstudio]),
     forwardRef(() => AuthModule),
-    forwardRef(() => CarreraQueueModule),
+    forwardRef(() => QueueModule),
   ],
   controllers: [CarreraController],
   providers: [CarreraService],
