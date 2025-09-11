@@ -1,3 +1,4 @@
+import { GenericWrapperService } from './../queue/generic-wrapper.service';
 import { AuthGuard } from './../auth/guard/auth.guard';
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { HorarioService } from './horario.service';
@@ -9,30 +10,34 @@ import { ApiBearerAuth } from '@nestjs/swagger';
 @UseGuards(AuthGuard)
 @ApiBearerAuth()
 export class HorarioController {
-  constructor(private readonly horarioService: HorarioService) {}
-
+  private horarioWrapper: any;
+      constructor(private readonly genericWrapperService: GenericWrapperService) {
+        this.horarioWrapper =
+          this.genericWrapperService.createServiceWrapper('horario');
+      }
+    
   @Post()
   create(@Body() createHorarioDto: CreateHorarioDto) {
-    return this.horarioService.create(createHorarioDto);
+    return this.horarioWrapper.create(createHorarioDto);
   }
 
   @Get()
   findAll() {
-    return this.horarioService.findAll();
+    return this.horarioWrapper.findAll();
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.horarioService.findOne(+id);
+    return this.horarioWrapper.findOne(+id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateHorarioDto: UpdateHorarioDto) {
-    return this.horarioService.update(+id, updateHorarioDto);
+    return this.horarioWrapper.update(+id, updateHorarioDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.horarioService.remove(+id);
+    return this.horarioWrapper.remove(+id);
   }
 }

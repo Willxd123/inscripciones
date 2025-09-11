@@ -1,3 +1,4 @@
+import { QueueModule } from './../queue/queue.module';
 import { AuthModule } from './../auth/auth.module';
 import { forwardRef, Module } from '@nestjs/common';
 import { PlanEstudioService } from './plan-estudio.service';
@@ -9,10 +10,12 @@ import { Nivel } from '../nivel/entities/nivel.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([PlanEstudio, Carrera]),forwardRef(() => AuthModule),
+    TypeOrmModule.forFeature([PlanEstudio, Carrera]),
+    forwardRef(() => AuthModule),
+    forwardRef(() => QueueModule),
   ],
   controllers: [PlanEstudioController],
   providers: [PlanEstudioService],
-  exports: [PlanEstudioService],
+  exports: [TypeOrmModule, PlanEstudioService],
 })
 export class PlanEstudioModule {}

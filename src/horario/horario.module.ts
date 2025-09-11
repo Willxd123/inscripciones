@@ -1,3 +1,4 @@
+import { QueueModule } from './../queue/queue.module';
 import { AuthModule } from './../auth/auth.module';
 import { forwardRef, Module } from '@nestjs/common';
 import { HorarioService } from './horario.service';
@@ -9,10 +10,10 @@ import { BoletaHorario } from '../boleta-horario/entities/boleta-horario.entity'
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Horario, Aula, BoletaHorario]),forwardRef(() => AuthModule),
+    TypeOrmModule.forFeature([Horario, Aula, BoletaHorario]),forwardRef(() => AuthModule),forwardRef(() => QueueModule),
   ],
   controllers: [HorarioController],
   providers: [HorarioService],
-  exports: [HorarioService],
+  exports: [TypeOrmModule,HorarioService],
 })
 export class HorarioModule {}

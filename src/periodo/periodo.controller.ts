@@ -1,3 +1,4 @@
+import { GenericWrapperService } from './../queue/generic-wrapper.service';
 import { AuthGuard } from './../auth/guard/auth.guard';
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { PeriodoService } from './periodo.service';
@@ -9,30 +10,33 @@ import { ApiBearerAuth } from '@nestjs/swagger';
 @UseGuards(AuthGuard)
 @ApiBearerAuth()
 export class PeriodoController {
-  constructor(private readonly periodoService: PeriodoService) {}
-
+  private periodoWrapper: any;
+    constructor(private readonly genericWrapperService: GenericWrapperService) {
+      this.periodoWrapper =
+        this.genericWrapperService.createServiceWrapper('nota');
+    }
   @Post()
   create(@Body() createPeriodoDto: CreatePeriodoDto) {
-    return this.periodoService.create(createPeriodoDto);
+    return this.periodoWrapper.create(createPeriodoDto);
   }
 
   @Get()
   findAll() {
-    return this.periodoService.findAll();
+    return this.periodoWrapper.findAll();
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.periodoService.findOne(+id);
+    return this.periodoWrapper.findOne(+id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updatePeriodoDto: UpdatePeriodoDto) {
-    return this.periodoService.update(+id, updatePeriodoDto);
+    return this.periodoWrapper.update(+id, updatePeriodoDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.periodoService.remove(+id);
+    return this.periodoWrapper.remove(+id);
   }
 }

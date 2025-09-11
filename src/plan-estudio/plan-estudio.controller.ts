@@ -1,3 +1,4 @@
+import { GenericWrapperService } from './../queue/generic-wrapper.service';
 import { AuthGuard } from './../auth/guard/auth.guard';
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { PlanEstudioService } from './plan-estudio.service';
@@ -9,30 +10,33 @@ import { ApiBearerAuth } from '@nestjs/swagger';
 @UseGuards(AuthGuard)
 @ApiBearerAuth()
 export class PlanEstudioController {
-  constructor(private readonly planEstudioService: PlanEstudioService) {}
+  private planEstudioWrapper: any;
+  constructor(private readonly genericWrapperService: GenericWrapperService) {
+    this.planEstudioWrapper = this.genericWrapperService.createServiceWrapper('plan-estudio');
+  }
 
   @Post()
   create(@Body() createPlanEstudioDto: CreatePlanEstudioDto) {
-    return this.planEstudioService.create(createPlanEstudioDto);
+    return this.planEstudioWrapper.create(createPlanEstudioDto);
   }
 
   @Get()
   findAll() {
-    return this.planEstudioService.findAll();
+    return this.planEstudioWrapper.findAll();
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.planEstudioService.findOne(+id);
+    return this.planEstudioWrapper.findOne(+id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updatePlanEstudioDto: UpdatePlanEstudioDto) {
-    return this.planEstudioService.update(+id, updatePlanEstudioDto);
+    return this.planEstudioWrapper.update(+id, updatePlanEstudioDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.planEstudioService.remove(+id);
+    return this.planEstudioWrapper.remove(+id);
   }
 }

@@ -1,3 +1,4 @@
+import { GenericWrapperService } from './../queue/generic-wrapper.service';
 import { AuthGuard } from './../auth/guard/auth.guard';
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { GrupoMateriaService } from './grupo-materia.service';
@@ -9,30 +10,34 @@ import { ApiBearerAuth } from '@nestjs/swagger';
 @UseGuards(AuthGuard)
 @ApiBearerAuth()
 export class GrupoMateriaController {
-  constructor(private readonly grupoMateriaService: GrupoMateriaService) {}
-
+  private grupoMateriaWrapper: any;
+    constructor(private readonly genericWrapperService: GenericWrapperService) {
+      this.grupoMateriaWrapper =
+        this.genericWrapperService.createServiceWrapper('grupo-materia');
+    }
+  
   @Post()
   create(@Body() createGrupoMateriaDto: CreateGrupoMateriaDto) {
-    return this.grupoMateriaService.create(createGrupoMateriaDto);
+    return this.grupoMateriaWrapper.create(createGrupoMateriaDto);
   }
 
   @Get()
   findAll() {
-    return this.grupoMateriaService.findAll();
+    return this.grupoMateriaWrapper.findAll();
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.grupoMateriaService.findOne(+id);
+    return this.grupoMateriaWrapper.findOne(+id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateGrupoMateriaDto: UpdateGrupoMateriaDto) {
-    return this.grupoMateriaService.update(+id, updateGrupoMateriaDto);
+    return this.grupoMateriaWrapper.update(+id, updateGrupoMateriaDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.grupoMateriaService.remove(+id);
+    return this.grupoMateriaWrapper.remove(+id);
   }
 }

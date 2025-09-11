@@ -19,13 +19,14 @@ import { GrupoMateria } from '../grupo-materia/entities/grupo-materia.entity';
 import { Inscripcion } from '../inscripcion/entities/inscripcion.entity';
 import { BoletaHorario } from '../boleta-horario/entities/boleta-horario.entity';
 import { Nota } from '../nota/entities/nota.entity';
+import { DetalleInscripcion } from 'src/detalle-inscripcion/entities/detalle-inscripcion.entity';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([
       Carrera, PlanEstudio, Nivel, Materia, Prerequisito, Grupo,
       Docente, Aula, Modulo, Horario, Gestion, Periodo, Estudiante,
-      GrupoMateria, Inscripcion, BoletaHorario, Nota
+      GrupoMateria, Inscripcion, BoletaHorario, Nota, DetalleInscripcion
     ]),
   ],
   providers: [SeedService],

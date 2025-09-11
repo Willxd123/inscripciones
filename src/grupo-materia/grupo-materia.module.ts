@@ -1,3 +1,4 @@
+import { QueueModule } from './../queue/queue.module';
 import { AuthModule } from './../auth/auth.module';
 import { forwardRef, Module } from '@nestjs/common';
 import { GrupoMateriaService } from './grupo-materia.service';
@@ -22,9 +23,10 @@ import { Nota } from '../nota/entities/nota.entity';
       BoletaHorario, 
       Nota
     ]),forwardRef(() => AuthModule),
+    forwardRef(() => QueueModule),
   ],
   controllers: [GrupoMateriaController],
   providers: [GrupoMateriaService],
-  exports: [GrupoMateriaService],
+  exports: [TypeOrmModule, GrupoMateriaService],
 })
 export class GrupoMateriaModule {}

@@ -1,3 +1,4 @@
+import { GenericWrapperService } from './../queue/generic-wrapper.service';
 import { AuthGuard } from './../auth/guard/auth.guard';
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { GestionService } from './gestion.service';
@@ -9,30 +10,33 @@ import { ApiBearerAuth } from '@nestjs/swagger';
 @UseGuards(AuthGuard)
 @ApiBearerAuth()
 export class GestionController {
-  constructor(private readonly gestionService: GestionService) {}
+  private gestionWrapper: any;
+    constructor(private readonly genericWrapperService: GenericWrapperService) {
+      this.gestionWrapper = this.genericWrapperService.createServiceWrapper('gestion');
+    }
 
   @Post()
   create(@Body() createGestionDto: CreateGestionDto) {
-    return this.gestionService.create(createGestionDto);
+    return this.gestionWrapper.create(createGestionDto);
   }
 
   @Get()
   findAll() {
-    return this.gestionService.findAll();
+    return this.gestionWrapper.findAll();
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.gestionService.findOne(+id);
+    return this.gestionWrapper.findOne(+id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateGestionDto: UpdateGestionDto) {
-    return this.gestionService.update(+id, updateGestionDto);
+    return this.gestionWrapper.update(+id, updateGestionDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.gestionService.remove(+id);
+    return this.gestionWrapper.remove(+id);
   }
 }

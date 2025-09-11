@@ -1,3 +1,4 @@
+import { DetalleInscripcion } from './../detalle-inscripcion/entities/detalle-inscripcion.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -31,64 +32,64 @@ export class SeedService {
           { nombre: 'Estructuras Discretas', sigla: 'INF119' },
           { nombre: 'Introducción a la Informática', sigla: 'INF110' },
           { nombre: 'Inglés Técnico I', sigla: 'LIN100' },
-          { nombre: 'Física I', sigla: 'FIS100' }
+          { nombre: 'Física I', sigla: 'FIS100' },
         ],
         2: [
           { nombre: 'Cálculo II', sigla: 'MAT102' },
           { nombre: 'Álgebra Lineal', sigla: 'MAT103' },
           { nombre: 'Programación I', sigla: 'INF120' },
           { nombre: 'Inglés Técnico II', sigla: 'LIN101' },
-          { nombre: 'Física II', sigla: 'FIS102' }
+          { nombre: 'Física II', sigla: 'FIS102' },
         ],
         3: [
           { nombre: 'Ecuaciones Diferenciales', sigla: 'MAT207' },
           { nombre: 'Programación II', sigla: 'INF210' },
           { nombre: 'Arquitectura de Computadores', sigla: 'INF211' },
           { nombre: 'Administración', sigla: 'ADM100' },
-          { nombre: 'Física III', sigla: 'FIS200' }
+          { nombre: 'Física III', sigla: 'FIS200' },
         ],
         4: [
           { nombre: 'Probabilidad y Estadística I', sigla: 'MAT202' },
           { nombre: 'Métodos Numéricos', sigla: 'MAT205' },
           { nombre: 'Estructura de Datos I', sigla: 'INF220' },
           { nombre: 'Programación Ensamblador', sigla: 'INF221' },
-          { nombre: 'Contabilidad', sigla: 'ADM200' }
+          { nombre: 'Contabilidad', sigla: 'ADM200' },
         ],
         5: [
           { nombre: 'Probabilidad y Estadística II', sigla: 'MAT302' },
           { nombre: 'Lenguajes Formales', sigla: 'INF319' },
           { nombre: 'Estructura de Datos II', sigla: 'INF310' },
           { nombre: 'Programación Lógica y Funcional', sigla: 'INF318' },
-          { nombre: 'Base de Datos I', sigla: 'INF312' }
+          { nombre: 'Base de Datos I', sigla: 'INF312' },
         ],
         6: [
           { nombre: 'Investigación Operativa I', sigla: 'MAT329' },
           { nombre: 'Compiladores', sigla: 'INF329' },
           { nombre: 'Sistemas Operativos I', sigla: 'INF323' },
           { nombre: 'Sistemas de Información I', sigla: 'INF342' },
-          { nombre: 'Base de Datos II', sigla: 'INF322' }
+          { nombre: 'Base de Datos II', sigla: 'INF322' },
         ],
         7: [
           { nombre: 'Investigación Operativa II', sigla: 'MAT419' },
           { nombre: 'Redes I', sigla: 'INF433' },
           { nombre: 'Sistemas Operativos II', sigla: 'INF413' },
           { nombre: 'Inteligencia Artificial', sigla: 'INF418' },
-          { nombre: 'Sistemas de Información II', sigla: 'INF412' }
+          { nombre: 'Sistemas de Información II', sigla: 'INF412' },
         ],
         8: [
           { nombre: 'Preparación y Evaluación de Proyectos', sigla: 'ECO449' },
           { nombre: 'Redes II', sigla: 'INF423' },
           { nombre: 'Sistemas Expertos', sigla: 'INF428' },
           { nombre: 'Sistemas de Información Geográfica', sigla: 'INF442' },
-          { nombre: 'Ingeniería de Software I', sigla: 'INF422' }
+          { nombre: 'Ingeniería de Software I', sigla: 'INF422' },
         ],
         9: [
           { nombre: 'Taller de Grado I', sigla: 'INF511' },
           { nombre: 'Ingeniería de Software II', sigla: 'INF512' },
           { nombre: 'Tecnología Web', sigla: 'INF513' },
-          { nombre: 'Arquitectura de Software', sigla: 'INF552' }
-        ]
-      }
+          { nombre: 'Arquitectura de Software', sigla: 'INF552' },
+        ],
+      },
     },
     'Ingeniería en Sistemas': {
       codigo: 'SIS',
@@ -99,64 +100,67 @@ export class SeedService {
           { nombre: 'Estructuras Discretas', sigla: 'INF119' },
           { nombre: 'Introducción a la Informática', sigla: 'INF110' },
           { nombre: 'Inglés Técnico I', sigla: 'LIN100' },
-          { nombre: 'Física I', sigla: 'FIS100' }
+          { nombre: 'Física I', sigla: 'FIS100' },
         ],
         2: [
           { nombre: 'Cálculo II', sigla: 'MAT102' },
           { nombre: 'Álgebra Lineal', sigla: 'MAT103' },
           { nombre: 'Programación I', sigla: 'INF120' },
           { nombre: 'Inglés Técnico II', sigla: 'LIN101' },
-          { nombre: 'Física II', sigla: 'FIS102' }
+          { nombre: 'Física II', sigla: 'FIS102' },
         ],
         3: [
           { nombre: 'Ecuaciones Diferenciales', sigla: 'MAT207' },
           { nombre: 'Programación II', sigla: 'INF210' },
           { nombre: 'Arquitectura de Computadores', sigla: 'INF211' },
           { nombre: 'Administración', sigla: 'ADM100' },
-          { nombre: 'Física III', sigla: 'FIS200' }
+          { nombre: 'Física III', sigla: 'FIS200' },
         ],
         4: [
           { nombre: 'Probabilidad y Estadística I', sigla: 'MAT202' },
           { nombre: 'Métodos Numéricos', sigla: 'MAT205' },
           { nombre: 'Estructura de Datos I', sigla: 'INF220' },
           { nombre: 'Programación Ensamblador', sigla: 'INF221' },
-          { nombre: 'Contabilidad', sigla: 'ADM200' }
+          { nombre: 'Contabilidad', sigla: 'ADM200' },
         ],
         5: [
           { nombre: 'Probabilidad y Estadística II', sigla: 'MAT302' },
           { nombre: 'Estructura de Datos II', sigla: 'INF310' },
           { nombre: 'Organización y Métodos', sigla: 'ADM330' },
           { nombre: 'Base de Datos I', sigla: 'INF312' },
-          { nombre: 'Economía para la Gestión', sigla: 'ECO300' }
+          { nombre: 'Economía para la Gestión', sigla: 'ECO300' },
         ],
         6: [
           { nombre: 'Investigación Operativa I', sigla: 'MAT329' },
           { nombre: 'Sistemas Operativos I', sigla: 'INF323' },
           { nombre: 'Finanzas para la Empresa', sigla: 'ADM320' },
           { nombre: 'Sistemas de Información I', sigla: 'INF342' },
-          { nombre: 'Base de Datos II', sigla: 'INF322' }
+          { nombre: 'Base de Datos II', sigla: 'INF322' },
         ],
         7: [
           { nombre: 'Investigación Operativa II', sigla: 'MAT419' },
           { nombre: 'Redes I', sigla: 'INF433' },
           { nombre: 'Sistemas Operativos II', sigla: 'INF413' },
-          { nombre: 'Sistemas para el Soporte a la Toma de Decisiones', sigla: 'INF432' },
-          { nombre: 'Sistemas de Información II', sigla: 'INF412' }
+          {
+            nombre: 'Sistemas para el Soporte a la Toma de Decisiones',
+            sigla: 'INF432',
+          },
+          { nombre: 'Sistemas de Información II', sigla: 'INF412' },
         ],
         8: [
           { nombre: 'Preparación y Evaluación de Proyectos', sigla: 'ECO449' },
           { nombre: 'Redes II', sigla: 'INF423' },
           { nombre: 'Auditoría Informática', sigla: 'INF462' },
           { nombre: 'Sistemas de Información Geográfica', sigla: 'INF442' },
-          { nombre: 'Ingeniería de Software I', sigla: 'INF422' }
+          { nombre: 'Ingeniería de Software I', sigla: 'INF422' },
         ],
         9: [
           { nombre: 'Taller de Grado I', sigla: 'INF511' },
           { nombre: 'Ingeniería de Software II', sigla: 'INF512' },
           { nombre: 'Tecnología Web', sigla: 'INF513' },
-          { nombre: 'Arquitectura de Software', sigla: 'INF552' }
-        ]
-      }
+          { nombre: 'Arquitectura de Software', sigla: 'INF552' },
+        ],
+      },
     },
     'Ingeniería en Redes y Telecomunicaciones': {
       codigo: 'RDS',
@@ -167,71 +171,79 @@ export class SeedService {
           { nombre: 'Estructuras Discretas', sigla: 'INF119' },
           { nombre: 'Introducción a la Informática', sigla: 'INF110' },
           { nombre: 'Inglés Técnico I', sigla: 'LIN100' },
-          { nombre: 'Física I', sigla: 'FIS100' }
+          { nombre: 'Física I', sigla: 'FIS100' },
         ],
         2: [
           { nombre: 'Cálculo II', sigla: 'MAT102' },
           { nombre: 'Álgebra Lineal', sigla: 'MAT103' },
           { nombre: 'Programación I', sigla: 'INF120' },
           { nombre: 'Inglés Técnico II', sigla: 'LIN101' },
-          { nombre: 'Física II', sigla: 'FIS102' }
+          { nombre: 'Física II', sigla: 'FIS102' },
         ],
         3: [
           { nombre: 'Ecuaciones Diferenciales', sigla: 'MAT207' },
           { nombre: 'Programación II', sigla: 'INF210' },
           { nombre: 'Análisis de Circuitos', sigla: 'RDS210' },
-          { nombre: 'Teoría de Campo', sigla: 'ELT241' }
+          { nombre: 'Teoría de Campo', sigla: 'ELT241' },
         ],
         4: [
           { nombre: 'Probabilidad y Estadística I', sigla: 'MAT202' },
           { nombre: 'Métodos Numéricos', sigla: 'MAT205' },
           { nombre: 'Señales y Sistemas', sigla: 'ELT354' },
-          { nombre: 'Análisis de Circuitos Electrónicos', sigla: 'RDS220' }
+          { nombre: 'Análisis de Circuitos Electrónicos', sigla: 'RDS220' },
         ],
         5: [
           { nombre: 'Probabilidad y Estadística II', sigla: 'MAT302' },
           { nombre: 'Sistemas Lógicos y Digitales I', sigla: 'ELT352' },
           { nombre: 'Electrónica Aplicada a Redes', sigla: 'RDS310' },
-          { nombre: 'Base de Datos I', sigla: 'INF312' }
+          { nombre: 'Base de Datos I', sigla: 'INF312' },
         ],
         6: [
           { nombre: 'Investigación Operativa I', sigla: 'MAT329' },
           { nombre: 'Interpretación de Señales y Sistemas', sigla: 'RDS320' },
           { nombre: 'Sistemas Lógicos y Digitales II', sigla: 'ELT362' },
           { nombre: 'Sistemas Operativos I', sigla: 'INF323' },
-          { nombre: 'Base de Datos II', sigla: 'INF322' }
+          { nombre: 'Base de Datos II', sigla: 'INF322' },
         ],
         7: [
           { nombre: 'Investigación Operativa II', sigla: 'MAT419' },
           { nombre: 'Redes I', sigla: 'INF433' },
           { nombre: 'Sistemas de Comunicación I', sigla: 'ELT374' },
           { nombre: 'Sistemas Operativos II', sigla: 'INF413' },
-          { nombre: 'Aplicaciones con Microprocesadores', sigla: 'RDS410' }
+          { nombre: 'Aplicaciones con Microprocesadores', sigla: 'RDS410' },
         ],
         8: [
           { nombre: 'Preparación y Evaluación de Proyectos', sigla: 'ECO449' },
           { nombre: 'Redes II', sigla: 'INF423' },
           { nombre: 'Taller de Análisis y Diseño de Redes', sigla: 'RDS421' },
           { nombre: 'Sistemas de Comunicación II', sigla: 'ELT384' },
-          { nombre: 'Legislación en Redes y Comunicaciones', sigla: 'RDS429' }
+          { nombre: 'Legislación en Redes y Comunicaciones', sigla: 'RDS429' },
         ],
         9: [
           { nombre: 'Taller de Grado I', sigla: 'INF511' },
           { nombre: 'Gestión y Administración de Redes', sigla: 'RDS511' },
           { nombre: 'Tecnología Web', sigla: 'INF513' },
-          { nombre: 'Redes Inalámbricas y Comunicaciones Móviles', sigla: 'RDS512' },
-          { nombre: 'Seguridad de Redes y Transmisión de Datos', sigla: 'RDS519' }
-        ]
-      }
-    }
+          {
+            nombre: 'Redes Inalámbricas y Comunicaciones Móviles',
+            sigla: 'RDS512',
+          },
+          {
+            nombre: 'Seguridad de Redes y Transmisión de Datos',
+            sigla: 'RDS519',
+          },
+        ],
+      },
+    },
   };
 
   constructor(
     @InjectRepository(Carrera) private carreraRepository: Repository<Carrera>,
-    @InjectRepository(PlanEstudio) private planEstudioRepository: Repository<PlanEstudio>,
+    @InjectRepository(PlanEstudio)
+    private planEstudioRepository: Repository<PlanEstudio>,
     @InjectRepository(Nivel) private nivelRepository: Repository<Nivel>,
     @InjectRepository(Materia) private materiaRepository: Repository<Materia>,
-    @InjectRepository(Prerequisito) private prerequisitoRepository: Repository<Prerequisito>,
+    @InjectRepository(Prerequisito)
+    private prerequisitoRepository: Repository<Prerequisito>,
     @InjectRepository(Grupo) private grupoRepository: Repository<Grupo>,
     @InjectRepository(Docente) private docenteRepository: Repository<Docente>,
     @InjectRepository(Aula) private aulaRepository: Repository<Aula>,
@@ -239,12 +251,18 @@ export class SeedService {
     @InjectRepository(Horario) private horarioRepository: Repository<Horario>,
     @InjectRepository(Gestion) private gestionRepository: Repository<Gestion>,
     @InjectRepository(Periodo) private periodoRepository: Repository<Periodo>,
-    @InjectRepository(Estudiante) private estudianteRepository: Repository<Estudiante>,
-    @InjectRepository(GrupoMateria) private grupoMateriaRepository: Repository<GrupoMateria>,
-    @InjectRepository(Inscripcion) private inscripcionRepository: Repository<Inscripcion>,
-    @InjectRepository(BoletaHorario) private boletaHorarioRepository: Repository<BoletaHorario>,
+    @InjectRepository(Estudiante)
+    private estudianteRepository: Repository<Estudiante>,
+    @InjectRepository(GrupoMateria)
+    private grupoMateriaRepository: Repository<GrupoMateria>,
+    @InjectRepository(Inscripcion)
+    private inscripcionRepository: Repository<Inscripcion>,
+    @InjectRepository(DetalleInscripcion)
+    private detalleInscripcionRepository: Repository<DetalleInscripcion>,
+    @InjectRepository(BoletaHorario)
+    private boletaHorarioRepository: Repository<BoletaHorario>,
     @InjectRepository(Nota) private notaRepository: Repository<Nota>,
-  ) { }
+  ) {}
 
   async runAllSeeds() {
     console.log('🌱 Iniciando seeders FICCT...');
@@ -265,6 +283,7 @@ export class SeedService {
       await this.safeSeed(() => this.seedEstudiantes(), 'Estudiantes');
       await this.safeSeed(() => this.seedGrupoMaterias(), 'Grupo Materias');
       await this.safeSeed(() => this.seedInscripciones(), 'Inscripciones');
+      await this.safeSeed(() => this.seedDetalleInscripciones(), 'Detalle Inscripciones');
       await this.safeSeed(() => this.seedBoletasHorario(), 'Boletas Horario');
       await this.safeSeed(() => this.seedNotas(), 'Notas');
 
@@ -280,14 +299,14 @@ export class SeedService {
       await seedFn();
       console.log(`✅ ${nombre} creados correctamente`);
     } catch (error: any) {
-      if (error.code === '23505') { // Código de error de duplicado en Postgres
+      if (error.code === '23505') {
+        // Código de error de duplicado en Postgres
         console.warn(`⚠️ ${nombre} ya existen, se omite.`);
       } else {
         throw error; // Otros errores sí se lanzan
       }
     }
   }
-
 
   private async seedCarreras(force = false) {
     console.log('📚 Creando carreras FICCT...');
@@ -300,7 +319,9 @@ export class SeedService {
 
     for (const [nombreCarrera, data] of Object.entries(this.carriersData)) {
       // Verificar si ya existe
-      const carreraExistente = await this.carreraRepository.findOneBy({ codigo: data.codigo });
+      const carreraExistente = await this.carreraRepository.findOneBy({
+        codigo: data.codigo,
+      });
 
       if (carreraExistente && !force) {
         console.log(`⚠️ Carrera ${data.codigo} ya existe, se omite.`);
@@ -310,13 +331,12 @@ export class SeedService {
       // Si no existe o se fuerza, insertar
       const carrera = this.carreraRepository.create({
         nombre: nombreCarrera,
-        codigo: data.codigo
+        codigo: data.codigo,
       });
       await this.carreraRepository.save(carrera);
       console.log(`✅ Carrera ${data.codigo} creada`);
     }
   }
-
 
   private async seedPlanesEstudio() {
     console.log('📋 Creando planes de estudio FICCT...');
@@ -330,8 +350,9 @@ export class SeedService {
     const carreras = await this.carreraRepository.find();
 
     for (const carrera of carreras) {
-      const carreraData = Object.values(this.carriersData)
-        .find(data => data.codigo === carrera.codigo);
+      const carreraData = Object.values(this.carriersData).find(
+        (data) => data.codigo === carrera.codigo,
+      );
 
       if (carreraData) {
         const plan = this.planEstudioRepository.create({
@@ -358,7 +379,6 @@ export class SeedService {
     }
   }
 
-
   private async seedMaterias() {
     console.log('📖 Creando materias específicas por carrera...');
 
@@ -369,18 +389,23 @@ export class SeedService {
     }
 
     const planes = await this.planEstudioRepository.find({
-      relations: ['carrera']
+      relations: ['carrera'],
     });
 
     for (const plan of planes) {
-      const carreraData = Object.values(this.carriersData)
-        .find(data => data.codigo === plan.carrera.codigo);
+      const carreraData = Object.values(this.carriersData).find(
+        (data) => data.codigo === plan.carrera.codigo,
+      );
 
       if (carreraData) {
         // recorremos los niveles definidos en carriersData
-        for (const [nivelNumero, materiasNivel] of Object.entries(carreraData.materias)) {
+        for (const [nivelNumero, materiasNivel] of Object.entries(
+          carreraData.materias,
+        )) {
           // buscamos el nivel ya creado en la BD
-          const nivel = await this.nivelRepository.findOneBy({ numero: Number(nivelNumero) });
+          const nivel = await this.nivelRepository.findOneBy({
+            numero: Number(nivelNumero),
+          });
 
           if (!nivel) {
             console.warn(`⚠️ Nivel ${nivelNumero} no encontrado, se omite`);
@@ -391,7 +416,7 @@ export class SeedService {
           for (const materiaData of materiasNivel) {
             // ✅ Verificar si la materia ya existe
             const materiaExistente = await this.materiaRepository.findOne({
-              where: { sigla: materiaData.sigla }
+              where: { sigla: materiaData.sigla },
             });
 
             if (materiaExistente) {
@@ -403,7 +428,7 @@ export class SeedService {
               nombre: materiaData.nombre,
               sigla: materiaData.sigla,
               nivel: nivel,
-              planEstudio: plan
+              planEstudio: plan,
             });
 
             await this.materiaRepository.save(materia);
@@ -424,40 +449,42 @@ export class SeedService {
 
     // Prerequisitos comunes por siglas
     const prerequisitosMap = {
-      'MAT102': ['MAT101'],
-      'MAT103': ['MAT101'],
-      'MAT207': ['MAT102'],
-      'MAT202': ['MAT102', 'MAT103'],
-      'MAT302': ['MAT202'],
-      'MAT329': ['MAT302'],
-      'MAT419': ['MAT329'],
-      'INF120': ['INF110'],
-      'INF210': ['INF120'],
-      'INF220': ['INF210'],
-      'INF310': ['INF220'],
-      'INF211': ['INF120'],
-      'INF221': ['INF211'],
-      'INF312': ['INF310'],
-      'INF322': ['INF312'],
-      'INF323': ['INF211'],
-      'INF413': ['INF323'],
-      'INF433': ['INF323'],
-      'INF423': ['INF433'],
-      'FIS102': ['FIS100'],
-      'FIS200': ['FIS102'],
-      'LIN101': ['LIN100'],
-      'ADM200': ['ADM100']
+      MAT102: ['MAT101'],
+      MAT103: ['MAT101'],
+      MAT207: ['MAT102'],
+      MAT202: ['MAT102', 'MAT103'],
+      MAT302: ['MAT202'],
+      MAT329: ['MAT302'],
+      MAT419: ['MAT329'],
+      INF120: ['INF110'],
+      INF210: ['INF120'],
+      INF220: ['INF210'],
+      INF310: ['INF220'],
+      INF211: ['INF120'],
+      INF221: ['INF211'],
+      INF312: ['INF310'],
+      INF322: ['INF312'],
+      INF323: ['INF211'],
+      INF413: ['INF323'],
+      INF433: ['INF323'],
+      INF423: ['INF433'],
+      FIS102: ['FIS100'],
+      FIS200: ['FIS102'],
+      LIN101: ['LIN100'],
+      ADM200: ['ADM100'],
     };
 
-    for (const [siglaMateria, prerequisitosSiglas] of Object.entries(prerequisitosMap)) {
+    for (const [siglaMateria, prerequisitosSiglas] of Object.entries(
+      prerequisitosMap,
+    )) {
       const materia = await this.materiaRepository.findOne({
-        where: { sigla: siglaMateria }
+        where: { sigla: siglaMateria },
       });
 
       if (materia) {
         for (const prerequisitoSigla of prerequisitosSiglas) {
           const materiaRequerida = await this.materiaRepository.findOne({
-            where: { sigla: prerequisitoSigla }
+            where: { sigla: prerequisitoSigla },
           });
 
           if (materiaRequerida) {
@@ -482,7 +509,11 @@ export class SeedService {
     }
 
     const modulos = [
-      { nombre: 'Facultad de Ingeniería en Ciencias de la Computación y Tecnologías', codigo: '236' },
+      {
+        nombre:
+          'Facultad de Ingeniería en Ciencias de la Computación y Tecnologías',
+        codigo: '236',
+      },
     ];
 
     for (const modulo of modulos) {
@@ -528,7 +559,14 @@ export class SeedService {
       return;
     }
 
-    const dias = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado'];
+    const dias = [
+      'lunes',
+      'martes',
+      'miercoles',
+      'jueves',
+      'viernes',
+      'sabado',
+    ];
     const aulas = await this.aulaRepository.find();
 
     // Horarios académicos típicos
@@ -541,7 +579,7 @@ export class SeedService {
       { inicio: '15:30', fin: '16:50' },
       { inicio: '17:00', fin: '18:20' },
       { inicio: '18:30', fin: '19:50' },
-      { inicio: '20:00', fin: '21:20' }
+      { inicio: '20:00', fin: '21:20' },
     ];
 
     for (const dia of dias) {
@@ -584,16 +622,40 @@ export class SeedService {
     }
 
     const docentes = [
-      { nombre: 'Carlos', apellido: 'Rodriguez', correo: 'carlos.rodriguez@ficct.edu' },
-      { nombre: 'María', apellido: 'González', correo: 'maria.gonzalez@ficct.edu' },
+      {
+        nombre: 'Carlos',
+        apellido: 'Rodriguez',
+        correo: 'carlos.rodriguez@ficct.edu',
+      },
+      {
+        nombre: 'María',
+        apellido: 'González',
+        correo: 'maria.gonzalez@ficct.edu',
+      },
       { nombre: 'Luis', apellido: 'Mendoza', correo: 'luis.mendoza@ficct.edu' },
       { nombre: 'Ana', apellido: 'Torres', correo: 'ana.torres@ficct.edu' },
       { nombre: 'Pedro', apellido: 'Vargas', correo: 'pedro.vargas@ficct.edu' },
-      { nombre: 'Laura', apellido: 'Herrera', correo: 'laura.herrera@ficct.edu' },
-      { nombre: 'José', apellido: 'Castillo', correo: 'jose.castillo@ficct.edu' },
-      { nombre: 'Carmen', apellido: 'Jiménez', correo: 'carmen.jimenez@ficct.edu' },
-      { nombre: 'Diego', apellido: 'Morales', correo: 'diego.morales@ficct.edu' },
-      { nombre: 'Elena', apellido: 'Rojas', correo: 'elena.rojas@ficct.edu' }
+      {
+        nombre: 'Laura',
+        apellido: 'Herrera',
+        correo: 'laura.herrera@ficct.edu',
+      },
+      {
+        nombre: 'José',
+        apellido: 'Castillo',
+        correo: 'jose.castillo@ficct.edu',
+      },
+      {
+        nombre: 'Carmen',
+        apellido: 'Jiménez',
+        correo: 'carmen.jimenez@ficct.edu',
+      },
+      {
+        nombre: 'Diego',
+        apellido: 'Morales',
+        correo: 'diego.morales@ficct.edu',
+      },
+      { nombre: 'Elena', apellido: 'Rojas', correo: 'elena.rojas@ficct.edu' },
     ];
 
     for (const docente of docentes) {
@@ -649,8 +711,36 @@ export class SeedService {
       return;
     }
 
-    const nombres = ['Alex', 'Sofia', 'Diego', 'Valentina', 'Santiago', 'Isabella', 'Mateo', 'Camila'];
-    const apellidos = ['Morales', 'Vargas', 'Herrera', 'Castillo', 'Jiménez', 'Rojas', 'Mendoza', 'Torres'];
+    // Obtener todos los planes de estudio disponibles
+    const planes = await this.planEstudioRepository.find({
+      relations: ['carrera'],
+    });
+
+    if (planes.length === 0) {
+      console.warn('⚠️ No hay planes de estudio disponibles');
+      return;
+    }
+
+    const nombres = [
+      'Alex',
+      'Sofia',
+      'Diego',
+      'Valentina',
+      'Santiago',
+      'Isabella',
+      'Mateo',
+      'Camila',
+    ];
+    const apellidos = [
+      'Morales',
+      'Vargas',
+      'Herrera',
+      'Castillo',
+      'Jiménez',
+      'Rojas',
+      'Mendoza',
+      'Torres',
+    ];
 
     for (let i = 0; i < 50; i++) {
       const nombre = nombres[Math.floor(Math.random() * nombres.length)];
@@ -661,12 +751,16 @@ export class SeedService {
       const seisDígitosRandom = Math.floor(100000 + Math.random() * 900000);
       const registro = `${últimosDosDigitos}${seisDígitosRandom}`;
 
+      // Asignar un plan de estudio aleatorio
+      const planAleatorio = planes[Math.floor(Math.random() * planes.length)];
+
       const estudiante = this.estudianteRepository.create({
         registro,
         nombre,
         apellido,
         correo: `${nombre.toLowerCase()}.${apellido.toLowerCase()}${i}@estudiante.ficct.edu`,
         clave: '123456',
+        planEstudio: planAleatorio, // ← ESTO FALTABA
       });
       await this.estudianteRepository.save(estudiante);
     }
@@ -691,9 +785,10 @@ export class SeedService {
       const numGrupos = Math.floor(Math.random() * 2) + 1; // 1-2 grupos
 
       for (let i = 0; i < numGrupos; i++) {
-        const docente = Math.random() > 0.1
-          ? docentes[Math.floor(Math.random() * docentes.length)]
-          : null;
+        const docente =
+          Math.random() > 0.1
+            ? docentes[Math.floor(Math.random() * docentes.length)]
+            : null;
         const grupo = grupos[Math.floor(Math.random() * grupos.length)];
         const periodo = periodos[Math.floor(Math.random() * periodos.length)];
 
@@ -718,51 +813,115 @@ export class SeedService {
       return;
     }
 
-    const estudiantes = await this.estudianteRepository.find();
-    const grupoMaterias = await this.grupoMateriaRepository.find({
-      relations: ['materia', 'materia.nivel']
+    const estudiantes = await this.estudianteRepository.find({
+      relations: ['planEstudio'],
     });
 
-    // Cada estudiante se inscribe a 3-6 materias
+    // Cada estudiante puede tener 1-3 inscripciones (simula diferentes momentos)
     for (const estudiante of estudiantes) {
-      // Número de materias a inscribir: 3-6
-      const numMaterias = Math.floor(Math.random() * 4) + 3;
+      if (!estudiante.planEstudio) {
+        console.warn(
+          `⚠️ Estudiante ${estudiante.registro} sin plan de estudio asignado`,
+        );
+        continue;
+      }
+
+      const numInscripciones = Math.floor(Math.random() * 3) + 1; // 1-3 inscripciones
+
+      for (let i = 0; i < numInscripciones; i++) {
+        // Fechas diferentes para cada inscripción
+        const fechaBase = new Date('2024-01-15');
+        const diasAleatorios = Math.random() * 180; // Hasta 6 meses de diferencia
+        const fechaAleatoria = new Date(
+          fechaBase.getTime() + diasAleatorios * 24 * 60 * 60 * 1000,
+        );
+
+        const inscripcion = this.inscripcionRepository.create({
+          fechaInscripcion: fechaAleatoria,
+          estudiante: estudiante,
+        });
+        await this.inscripcionRepository.save(inscripcion);
+      }
+    }
+  }
+
+  private async seedDetalleInscripciones() {
+    console.log('📋 Creando detalles de inscripciones...');
+
+    const count = await this.detalleInscripcionRepository.count();
+    if (count > 0) {
+      console.log('⚠️ La tabla de detalle inscripciones ya tiene datos');
+      return;
+    }
+
+    const inscripciones = await this.inscripcionRepository.find({
+      relations: ['estudiante', 'estudiante.planEstudio'],
+    });
+
+    for (const inscripcion of inscripciones) {
+      if (!inscripcion.estudiante.planEstudio) {
+        console.warn(`⚠️ Estudiante sin plan de estudio`);
+        continue;
+      }
+
+      // Obtener grupos-materias del plan del estudiante
+      const grupoMaterias = await this.grupoMateriaRepository.find({
+        relations: ['materia', 'materia.planEstudio', 'materia.nivel'],
+        where: {
+          materia: {
+            planEstudio: {
+              id: inscripcion.estudiante.planEstudio.id,
+            },
+          },
+        },
+      });
+
+      if (grupoMaterias.length === 0) {
+        console.warn(
+          `⚠️ No hay grupos-materias para el plan ${inscripcion.estudiante.planEstudio.nombre}`,
+        );
+        continue;
+      }
+
+      // Número de materias por inscripción: 2-5
+      const numMaterias = Math.floor(Math.random() * 4) + 2;
       const grupoMateriasSeleccionados = new Set<number>();
 
-      // Nivel "aproximado" del estudiante (simula progreso académico)
-      const nivelEstudiante = Math.floor(Math.random() * 5) + 1; // 1-5
+      // Nivel "aproximado" del estudiante
+      const nivelEstudiante = Math.floor(Math.random() * 5) + 1;
 
-      // Filtrar solo grupoMaterias que tengan materia y nivel
+      // Filtrar materias del nivel apropiado
       const grupoMateriasFiltrados = grupoMaterias.filter(
-        (gm) => gm.materia?.nivel &&
+        (gm) =>
+          gm.materia?.nivel &&
           gm.materia.nivel.numero <= nivelEstudiante + 1 &&
-          gm.materia.nivel.numero >= Math.max(1, nivelEstudiante - 1)
+          gm.materia.nivel.numero >= Math.max(1, nivelEstudiante - 1),
       );
 
-      while (
-        grupoMateriasSeleccionados.size < numMaterias &&
+      const grupoMateriasDisponibles =
         grupoMateriasFiltrados.length > 0
-      ) {
-        // Elegir aleatoriamente una materia del grupo filtrado
-        const randomIndex = Math.floor(Math.random() * grupoMateriasFiltrados.length);
-        const grupoMateria = grupoMateriasFiltrados[randomIndex];
+          ? grupoMateriasFiltrados
+          : grupoMaterias.slice(0, 8);
 
-        // Evitar duplicados
+      while (
+        grupoMateriasSeleccionados.size <
+          Math.min(numMaterias, grupoMateriasDisponibles.length) &&
+        grupoMateriasDisponibles.length > 0
+      ) {
+        const randomIndex = Math.floor(
+          Math.random() * grupoMateriasDisponibles.length,
+        );
+        const grupoMateria = grupoMateriasDisponibles[randomIndex];
+
         if (!grupoMateriasSeleccionados.has(grupoMateria.id)) {
           grupoMateriasSeleccionados.add(grupoMateria.id);
 
-          // Fecha aleatoria de inscripción
-          const fechaBase = new Date('2024-01-15');
-          const fechaAleatoria = new Date(
-            fechaBase.getTime() + Math.random() * 30 * 24 * 60 * 60 * 1000
-          );
-
-          const inscripcion = this.inscripcionRepository.create({
-            fechaInscripcion: fechaAleatoria,
-            estudiante: estudiante,
+          // Crear detalle de inscripción
+          const detalleInscripcion = this.detalleInscripcionRepository.create({
+            inscripcion: inscripcion,
             grupoMateria: grupoMateria,
           });
-          await this.inscripcionRepository.save(inscripcion);
+          await this.detalleInscripcionRepository.save(detalleInscripcion);
         }
       }
     }
@@ -791,7 +950,7 @@ export class SeedService {
 
       while (horariosSeleccionados.size < numHorarios && horarios.length > 0) {
         let intentos = 0;
-        let horario: typeof horarios[0];
+        let horario: (typeof horarios)[0];
 
         // Evitar repetir día
         do {
@@ -799,7 +958,10 @@ export class SeedService {
           intentos++;
         } while (diasUsados.has(horario.dia) && intentos < 20);
 
-        if (!horariosSeleccionados.has(horario.id) && !diasUsados.has(horario.dia)) {
+        if (
+          !horariosSeleccionados.has(horario.id) &&
+          !diasUsados.has(horario.dia)
+        ) {
           horariosSeleccionados.add(horario.id);
           diasUsados.add(horario.dia);
 
@@ -819,11 +981,13 @@ export class SeedService {
     console.log('✅ Boletas de horario creadas exitosamente');
   }
 
-
   private determinarTipoClase(siglaMateria: string): string {
     if (siglaMateria.startsWith('INF') || siglaMateria.startsWith('RDS')) {
       return Math.random() > 0.5 ? 'laboratorio' : 'practica';
-    } else if (siglaMateria.startsWith('MAT') || siglaMateria.startsWith('FIS')) {
+    } else if (
+      siglaMateria.startsWith('MAT') ||
+      siglaMateria.startsWith('FIS')
+    ) {
       return Math.random() > 0.3 ? 'teoria' : 'practica';
     } else {
       return 'teoria';
@@ -832,42 +996,41 @@ export class SeedService {
 
   private async seedNotas() {
     console.log('📊 Creando notas...');
-
+  
     const count = await this.notaRepository.count();
     if (count > 0) {
       console.log('⚠️ La tabla de notas ya tiene datos');
       return;
     }
-
-    const inscripciones = await this.inscripcionRepository.find({
-      relations: ['estudiante', 'grupoMateria'],
+  
+    // Obtener detalles de inscripción (la nueva relación)
+    const detallesInscripcion = await this.detalleInscripcionRepository.find({
+      relations: ['inscripcion', 'inscripcion.estudiante', 'grupoMateria']
     });
-
-    for (const inscripcion of inscripciones) {
+  
+    for (const detalle of detallesInscripcion) {
       // 85% de probabilidad de generar nota
       if (Math.random() > 0.15) {
-        const notaValue = Math.round((Math.random() * 40 + 51) * 100) / 100; // entre 51 y 91
-
+        const notaValue = Math.round((Math.random() * 40 + 51) * 100) / 100;
+  
         const nota = this.notaRepository.create({
-          grupoMateriaId: inscripcion.grupoMateria.id,
-          estudianteId: inscripcion.estudiante.id,
+          grupoMateriaId: detalle.grupoMateria.id,
+          estudianteId: detalle.inscripcion.estudiante.id,
           numero: notaValue,
-          grupoMateria: inscripcion.grupoMateria,
-          estudiante: inscripcion.estudiante,
+          grupoMateria: detalle.grupoMateria,
+          estudiante: detalle.inscripcion.estudiante,
         });
-
+  
         try {
           await this.notaRepository.save(nota);
         } catch (error) {
-          // Evitar duplicados
           console.log(
-            `⚠️ Nota duplicada evitada: GrupoMateria ${inscripcion.grupoMateria.id} - Estudiante ${inscripcion.estudiante.id}`
+            `⚠️ Nota duplicada evitada: GrupoMateria ${detalle.grupoMateria.id} - Estudiante ${detalle.inscripcion.estudiante.id}`
           );
         }
       }
     }
-
-    console.log('✅ Notas creadas exitosamente');
   }
 
+    
 }

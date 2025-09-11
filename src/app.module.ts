@@ -24,6 +24,8 @@ import { GestionModule } from './gestion/gestion.module';
 import { BoletaHorarioModule } from './boleta-horario/boleta-horario.module';
 import { SeedModule } from './seeders/seed.module';
 import { AuthModule } from './auth/auth.module';
+import { DetalleInscripcionModule } from './detalle-inscripcion/detalle-inscripcion.module';
+
 
 @Module({
   imports: [
@@ -88,9 +90,10 @@ import { AuthModule } from './auth/auth.module';
     BoletaHorarioModule,
     SeedModule,
     AuthModule,
-    QueueModule
+    QueueModule,
+    DetalleInscripcionModule
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService,],
 })
 export class AppModule {}

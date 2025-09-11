@@ -1,0 +1,28 @@
+[
+  {
+    "url": "http://localhost:3000/api/carrera",
+    "method": "GET"
+  },
+  {
+    "url": "http://localhost:3000/api/carrera",
+    "method": "POST",
+    "body": {
+      "nombre": "Esta es una Prueba1",
+      "codigo": "100"
+    }
+  },
+  {
+    "url": "http://localhost:3000/api/carrera/140",
+    "method": "PUT",
+    "body": {
+      "nombre": "Esta es una2",
+      "ppa": 100,
+      "telefono": 700000,
+      "registro": 100000
+    }
+  },
+  {
+    "url": "http://localhost:3000/api/carrera/3",
+    "method": "DELETE"
+  }
+]
