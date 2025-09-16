@@ -1,23 +1,19 @@
-import { IsString, IsNotEmpty, MaxLength, IsOptional, IsInt, IsPositive, Matches } from 'class-validator';
+import { IsString, IsNotEmpty, MaxLength, IsOptional, IsInt, IsPositive } from 'class-validator';
 
 export class CreateHorarioDto {
   @IsString()
   @IsNotEmpty()
-  @Matches(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$/, {
-    message: 'hora_inicio debe tener formato HH:MM:SS'
-  })
+  @MaxLength(20) // Remover regex estricto, ser más flexible
   hora_inicio: string;
 
   @IsString()
   @IsNotEmpty()
-  @Matches(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$/, {
-    message: 'hora_fin debe tener formato HH:MM:SS'
-  })
+  @MaxLength(20) // Remover regex estricto
   hora_fin: string;
 
   @IsString()
   @IsNotEmpty()
-  @MaxLength(20)
+  @MaxLength(50) // Más permisivo
   dia: string;
 
   @IsInt()

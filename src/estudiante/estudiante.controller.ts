@@ -1,3 +1,4 @@
+import { GenericWrapperService } from './../queue/generic-wrapper.service';
 import { AuthGuard } from './../auth/guard/auth.guard';
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { EstudianteService } from './estudiante.service';
@@ -9,30 +10,33 @@ import { ApiBearerAuth } from '@nestjs/swagger';
 @UseGuards(AuthGuard)
 @ApiBearerAuth()
 export class EstudianteController {
-  constructor(private readonly estudianteService: EstudianteService) {}
 
+private estudianteWrapper: any;
+  constructor(private readonly genericWrapperService: GenericWrapperService) {
+    this.estudianteWrapper = this.genericWrapperService.createServiceWrapper('estudiante');
+  }
   @Post()
   create(@Body() createEstudianteDto: CreateEstudianteDto) {
-    return this.estudianteService.create(createEstudianteDto);
+    return this.estudianteWrapper.create(createEstudianteDto);
   }
 
   @Get()
   findAll() {
-    return this.estudianteService.findAll();
+    return this.estudianteWrapper.findAll();
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.estudianteService.findOne(+id);
+    return this.estudianteWrapper.findOne(+id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateEstudianteDto: UpdateEstudianteDto) {
-    return this.estudianteService.update(+id, updateEstudianteDto);
+    return this.estudianteWrapper.update(+id, updateEstudianteDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.estudianteService.remove(+id);
+    return this.estudianteWrapper.remove(+id);
   }
 }

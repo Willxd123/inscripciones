@@ -1,3 +1,4 @@
+import { QueueModule } from './../queue/queue.module';
 import { AuthModule } from './../auth/auth.module';
 import { forwardRef, Module } from '@nestjs/common';
 import { PrerequisitoService } from './prerequisito.service';
@@ -9,10 +10,12 @@ import { Materia } from '../materia/entities/materia.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Prerequisito, Materia]),forwardRef(() => AuthModule),
+    TypeOrmModule.forFeature([Prerequisito, Materia]),
+    forwardRef(() => AuthModule),
+    forwardRef(() => QueueModule),
   ],
   controllers: [PrerequisitoController],
   providers: [PrerequisitoService],
-  exports: [PrerequisitoService],
+  exports: [TypeOrmModule, PrerequisitoService],
 })
-export class PrerequisitoModule  {}
+export class PrerequisitoModule {}

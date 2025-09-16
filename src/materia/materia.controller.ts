@@ -1,3 +1,4 @@
+import { GenericWrapperService } from './../queue/generic-wrapper.service';
 import { AuthGuard } from './../auth/guard/auth.guard';
 import {
   Controller,
@@ -18,30 +19,33 @@ import { ApiBearerAuth } from '@nestjs/swagger';
 @UseGuards(AuthGuard)
 @ApiBearerAuth()
 export class MateriaController {
-  constructor(private readonly materiaService: MateriaService) {}
-
+  private materiaWrapper: any;
+  constructor(private readonly genericWrapperService: GenericWrapperService) {
+    this.materiaWrapper =
+      this.genericWrapperService.createServiceWrapper('materia');
+  }
   @Post()
   create(@Body() createMateriaDto: CreateMateriaDto) {
-    return this.materiaService.create(createMateriaDto);
+    return this.materiaWrapper.create(createMateriaDto);
   }
 
   @Get()
   findAll() {
-    return this.materiaService.findAll();
+    return this.materiaWrapper.findAll();
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.materiaService.findOne(+id);
+    return this.materiaWrapper.findOne(+id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateMateriaDto: UpdateMateriaDto) {
-    return this.materiaService.update(+id, updateMateriaDto);
+    return this.materiaWrapper.update(+id, updateMateriaDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.materiaService.remove(+id);
+    return this.materiaWrapper.remove(+id);
   }
 }

@@ -1,3 +1,4 @@
+import { GenericWrapperService } from './../queue/generic-wrapper.service';
 import { AuthGuard } from './../auth/guard/auth.guard';
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { InscripcionService } from './inscripcion.service';
@@ -9,30 +10,33 @@ import { ApiBearerAuth } from '@nestjs/swagger';
 @UseGuards(AuthGuard)
 @ApiBearerAuth()
 export class InscripcionController {
-  constructor(private readonly inscripcionService: InscripcionService) {}
-
+   private inscripcionWrapper: any;
+        constructor(private readonly genericWrapperService: GenericWrapperService) {
+          this.inscripcionWrapper =
+            this.genericWrapperService.createServiceWrapper('inscripcion');
+        }
   @Post()
   create(@Body() createInscripcionDto: CreateInscripcionDto) {
-    return this.inscripcionService.create(createInscripcionDto);
+    return this.inscripcionWrapper.create(createInscripcionDto);
   }
 
   @Get()
   findAll() {
-    return this.inscripcionService.findAll();
+    return this.inscripcionWrapper.findAll();
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.inscripcionService.findOne(+id);
+    return this.inscripcionWrapper.findOne(+id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateInscripcionDto: UpdateInscripcionDto) {
-    return this.inscripcionService.update(+id, updateInscripcionDto);
+    return this.inscripcionWrapper.update(+id, updateInscripcionDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.inscripcionService.remove(+id);
+    return this.inscripcionWrapper.remove(+id);
   }
 }

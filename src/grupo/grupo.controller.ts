@@ -1,5 +1,15 @@
+import { GenericWrapperService } from './../queue/generic-wrapper.service';
 import { AuthGuard } from './../auth/guard/auth.guard';
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+} from '@nestjs/common';
 import { GrupoService } from './grupo.service';
 import { CreateGrupoDto } from './dto/create-grupo.dto';
 import { UpdateGrupoDto } from './dto/update-grupo.dto';
@@ -9,30 +19,34 @@ import { ApiBearerAuth } from '@nestjs/swagger';
 @UseGuards(AuthGuard)
 @ApiBearerAuth()
 export class GrupoController {
-  constructor(private readonly grupoService: GrupoService) {}
+  private grupoWrapper: any;
+  constructor(private readonly genericWrapperService: GenericWrapperService) {
+    this.grupoWrapper =
+      this.genericWrapperService.createServiceWrapper('grupo');
+  }
 
   @Post()
   create(@Body() createGrupoDto: CreateGrupoDto) {
-    return this.grupoService.create(createGrupoDto);
+    return this.grupoWrapper.create(createGrupoDto);
   }
 
   @Get()
   findAll() {
-    return this.grupoService.findAll();
+    return this.grupoWrapper.findAll();
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.grupoService.findOne(+id);
+    return this.grupoWrapper.findOne(+id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateGrupoDto: UpdateGrupoDto) {
-    return this.grupoService.update(+id, updateGrupoDto);
+    return this.grupoWrapper.update(+id, updateGrupoDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.grupoService.remove(+id);
+    return this.grupoWrapper.remove(+id);
   }
 }

@@ -1,17 +1,18 @@
-import { IsString, IsNotEmpty, MaxLength, IsInt, IsPositive } from 'class-validator';
+import { IsString, IsNotEmpty, MaxLength, IsInt, IsPositive, IsOptional } from 'class-validator';
 
 export class CreateModuloDto {
   @IsString()
   @IsNotEmpty()
-  @MaxLength(120)
+  @MaxLength(200) // Más permisivo
   nombre: string;
 
   @IsString()
-  @IsNotEmpty()
-  @MaxLength(30)
-  codigo: string;
+  @IsOptional() // Opcional para generar automáticamente
+  @MaxLength(100) // Más permisivo
+  codigo?: string;
 
   @IsInt()
   @IsPositive()
-  aulaId: number;
+  @IsOptional() // Hacer opcional
+  aulaId?: number;
 }

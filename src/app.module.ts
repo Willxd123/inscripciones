@@ -24,13 +24,22 @@ import { GestionModule } from './gestion/gestion.module';
 import { BoletaHorarioModule } from './boleta-horario/boleta-horario.module';
 import { SeedModule } from './seeders/seed.module';
 import { AuthModule } from './auth/auth.module';
+import { DetalleInscripcionModule } from './detalle-inscripcion/detalle-inscripcion.module';
+
+// Función helper para manejar retención configurable
+function parseRetentionValue(envValue: string | undefined, defaultValue: number): number | false {
+  if (!envValue) return defaultValue;
+  if (envValue.toLowerCase() === 'false') return false;
+  const parsed = parseInt(envValue, 10);
+  return isNaN(parsed) ? defaultValue : parsed;
+}
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    // Configuración de Bull para colas
+    // Configuración Bull SIMPLIFICADA que funciona correctamente
     BullModule.forRoot({
       redis: {
         host: process.env.REDIS_HOST || 'localhost',
@@ -39,34 +48,42 @@ import { AuthModule } from './auth/auth.module';
         db: parseInt(process.env.REDIS_DB || '0', 10),
       },
       defaultJobOptions: {
-        attempts: parseInt(process.env.QUEUE_DEFAULT_ATTEMPTS || '3', 10),
+        attempts: parseInt(process.env.QUEUE_DEFAULT_ATTEMPTS || '2', 10),
         backoff: {
           type: 'exponential',
           delay: parseInt(process.env.QUEUE_DEFAULT_DELAY || '1000', 10),
         },
-        removeOnComplete: 50, // Mantener últimos 50 trabajos completados
-        removeOnFail: 100,    // Mantener últimos 100 trabajos fallidos
+        removeOnComplete: parseRetentionValue(process.env.QUEUE_COMPLETED_RETENTION, 100),
+        removeOnFail: parseRetentionValue(process.env.QUEUE_FAILED_RETENTION, 50),
       },
     }),
+    // Configuración TypeORM optimizada
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: process.env.DATABASE_HOST || 'dpg-d2jonlur433s7381srq0-a.oregon-postgres.render.com',
+      host: process.env.DATABASE_HOST || 'localhost',
       port: parseInt(process.env.DATABASE_PORT || '5432', 10),
-      username: process.env.DATABASE_USER || 'topico_user',
-      password: process.env.DATABASE_PASSWORD || 'Wu7LtwbqSbQy75NJDEhJOMoZ2smzZW3b',
-      database: process.env.DATABASE_NAME || 'topico',
-      entities: ['dist/**/*.entity{.ts,.js}'], // Buscar todas las entidades
-      synchronize: process.env.NODE_ENV !== 'production',
-      // Configuración SSL específica para Render
+      username: process.env.DATABASE_USER || 'postgres',
+      password: process.env.DATABASE_PASSWORD || '12345',
+      database: process.env.DATABASE_NAME || 'inscripciones',
+      entities: ['dist/**/*.entity{.ts,.js}'],
+      synchronize: false,
+      logging: false,
       ssl: process.env.DATABASE_SSL === 'true' ? {
         rejectUnauthorized: false
       } : false,
-      logging: process.env.NODE_ENV === 'development',
-      // Configuración adicional para conexiones externas
       extra: {
-        connectionLimit: 10,
-        acquireTimeoutMillis: 60000,
-        timeout: 60000,
+        max: parseInt(process.env.DATABASE_POOL_MAX || '20', 10),
+        min: parseInt(process.env.DATABASE_POOL_MIN || '5', 10),
+        acquireTimeoutMillis: 30000,
+        createTimeoutMillis: 30000,
+        destroyTimeoutMillis: 5000,
+        idleTimeoutMillis: 30000,
+        reapIntervalMillis: 1000,
+        createRetryIntervalMillis: 200,
+        application_name: 'academic-service-high-load',
+        statement_timeout: 30000,
+        query_timeout: 30000,
+        connectionTimeoutMillis: 10000,
       },
     }),
     CarreraModule,
@@ -88,7 +105,8 @@ import { AuthModule } from './auth/auth.module';
     BoletaHorarioModule,
     SeedModule,
     AuthModule,
-    QueueModule
+    QueueModule,
+    DetalleInscripcionModule
   ],
   controllers: [AppController],
   providers: [AppService],

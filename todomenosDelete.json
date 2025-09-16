@@ -1,0 +1,396 @@
+[
+    {
+      "url": "/api/carrera",
+      "method": "GET"
+    },
+    {
+      "url": "/api/carrera",
+      "method": "POST",
+      "body": {
+        "nombre": "string",
+        "codigo": "string"
+      }
+    },
+    {
+      "url": "/api/carrera/1",
+      "method": "GET"
+    },
+    {
+      "url": "/api/carrera/1",
+      "method": "PATCH",
+      "body": {
+        "nombre": "string"
+      }
+    },
+    {
+      "url": "/api/aula",
+      "method": "GET"
+    },
+    {
+      "url": "/api/aula",
+      "method": "POST",
+      "body": {
+        "codigo": "string"
+      }
+    },
+    {
+      "url": "/api/aula/1",
+      "method": "GET"
+    },
+    {
+      "url": "/api/aula/1",
+      "method": "PATCH",
+      "body": {
+        "codigo": "string"
+      }
+    },
+    {
+      "url": "/api/estudiante",
+      "method": "GET"
+    },
+    {
+      "url": "/api/estudiante",
+      "method": "POST",
+      "body": {
+        "registro": "string",
+        "nombre": "string",
+        "apellido": "string",
+        "correo": "string",
+        "clave": "string"
+      }
+    },
+    {
+      "url": "/api/estudiante/1",
+      "method": "GET"
+    },
+    {
+      "url": "/api/estudiante/1",
+      "method": "PATCH",
+      "body": {
+        "nombre": "string",
+        "apellido": "string"
+      }
+    },
+    {
+      "url": "/api/docente",
+      "method": "GET"
+    },
+    {
+      "url": "/api/docente",
+      "method": "POST",
+      "body": {
+        "nombre": "string",
+        "apellido": "string",
+        "correo": "string"
+      }
+    },
+    {
+      "url": "/api/docente/1",
+      "method": "GET"
+    },
+    {
+      "url": "/api/docente/1",
+      "method": "PATCH",
+      "body": {
+        "nombre": "string"
+      }
+    },
+    {
+      "url": "/api/gestion",
+      "method": "GET"
+    },
+    {
+      "url": "/api/gestion",
+      "method": "POST",
+      "body": {
+        "numero": 2025
+      }
+    },
+    {
+      "url": "/api/gestion/1",
+      "method": "GET"
+    },
+    {
+      "url": "/api/gestion/1",
+      "method": "PATCH",
+      "body": {
+        "numero": 2026
+      }
+    },
+    {
+      "url": "/api/plan-estudio",
+      "method": "GET"
+    },
+    {
+      "url": "/api/plan-estudio",
+      "method": "POST",
+      "body": {
+        "nombre": "string",
+        "carreraId": 1
+      }
+    },
+    {
+      "url": "/api/plan-estudio/1",
+      "method": "GET"
+    },
+    {
+      "url": "/api/plan-estudio/1",
+      "method": "PATCH",
+      "body": {
+        "nombre": "string"
+      }
+    },
+    {
+      "url": "/api/nivel",
+      "method": "GET"
+    },
+    {
+      "url": "/api/nivel",
+      "method": "POST",
+      "body": {
+        "numero": 1,
+        "planEstudioId": 1
+      }
+    },
+    {
+      "url": "/api/nivel/1",
+      "method": "GET"
+    },
+    {
+      "url": "/api/nivel/1",
+      "method": "PATCH",
+      "body": {
+        "numero": 2
+      }
+    },
+    {
+      "url": "/api/materia",
+      "method": "GET"
+    },
+    {
+      "url": "/api/materia",
+      "method": "POST",
+      "body": {
+        "nombre": "string",
+        "sigla": "string",
+        "nivelId": 1
+      }
+    },
+    {
+      "url": "/api/materia/1",
+      "method": "GET"
+    },
+    {
+      "url": "/api/materia/1",
+      "method": "PATCH",
+      "body": {
+        "nombre": "string"
+      }
+    },
+    {
+      "url": "/api/modulo",
+      "method": "GET"
+    },
+    {
+      "url": "/api/modulo",
+      "method": "POST",
+      "body": {
+        "nombre": "string",
+        "codigo": "string",
+        "aulaId": 1
+      }
+    },
+    {
+      "url": "/api/modulo/1",
+      "method": "GET"
+    },
+    {
+      "url": "/api/modulo/1",
+      "method": "PATCH",
+      "body": {
+        "nombre": "string"
+      }
+    },
+    {
+      "url": "/api/grupo",
+      "method": "GET"
+    },
+    {
+      "url": "/api/grupo",
+      "method": "POST",
+      "body": {
+        "nombre": "string"
+      }
+    },
+    {
+      "url": "/api/grupo/1",
+      "method": "GET"
+    },
+    {
+      "url": "/api/grupo/1",
+      "method": "PATCH",
+      "body": {
+        "nombre": "string"
+      }
+    },
+    {
+      "url": "/api/periodo",
+      "method": "GET"
+    },
+    {
+      "url": "/api/periodo",
+      "method": "POST",
+      "body": {
+        "numero": 1,
+        "gestionId": 1
+      }
+    },
+    {
+      "url": "/api/periodo/1",
+      "method": "GET"
+    },
+    {
+      "url": "/api/periodo/1",
+      "method": "PATCH",
+      "body": {
+        "numero": 2
+      }
+    },
+    {
+      "url": "/api/horario",
+      "method": "GET"
+    },
+    {
+      "url": "/api/horario",
+      "method": "POST",
+      "body": {
+        "hora_inicio": "08:00:00",
+        "hora_fin": "10:00:00",
+        "dia": "string",
+        "aulaId": 1
+      }
+    },
+    {
+      "url": "/api/horario/1",
+      "method": "GET"
+    },
+    {
+      "url": "/api/horario/1",
+      "method": "PATCH",
+      "body": {
+        "dia": "string"
+      }
+    },
+    {
+      "url": "/api/grupo-materia",
+      "method": "GET"
+    },
+    {
+      "url": "/api/grupo-materia",
+      "method": "POST",
+      "body": {
+        "cupos": 30,
+        "materiaId": 1,
+        "docenteId": 1,
+        "grupoId": 1,
+        "periodoId": 1
+      }
+    },
+    {
+      "url": "/api/grupo-materia/1",
+      "method": "GET"
+    },
+    {
+      "url": "/api/grupo-materia/1",
+      "method": "PATCH",
+      "body": {
+        "cupos": 35
+      }
+    },
+    {
+      "url": "/api/boleta-horario",
+      "method": "GET"
+    },
+    {
+      "url": "/api/boleta-horario",
+      "method": "POST",
+      "body": {
+        "grupoMateriaId": 1,
+        "horarioId": 1
+      }
+    },
+    {
+      "url": "/api/inscripcion",
+      "method": "GET"
+    },
+    {
+      "url": "/api/inscripcion",
+      "method": "POST",
+      "body": {
+        "estudianteId": 1,
+        "detalles": [
+          { "grupoMateriaId": 1 },
+          { "grupoMateriaId": 2 }
+        ]
+      }
+    },
+    {
+      "url": "/api/inscripcion/1",
+      "method": "GET"
+    },
+    {
+      "url": "/api/inscripcion/1",
+      "method": "PATCH",
+      "body": {
+        "estudianteId": 2
+      }
+    },
+    {
+      "url": "/api/nota",
+      "method": "GET"
+    },
+    {
+      "url": "/api/nota",
+      "method": "POST",
+      "body": {
+        "grupoMateriaId": 1,
+        "estudianteId": 1,
+        "numero": 85.5
+      }
+    },
+    {
+      "url": "/api/prerequisito",
+      "method": "GET"
+    },
+    {
+      "url": "/api/prerequisito",
+      "method": "POST",
+      "body": {
+        "materiaId": 2,
+        "materiaRequeridaId": 1
+      }
+    },
+    {
+      "url": "/api/detalle-inscripcion",
+      "method": "GET"
+    },
+    {
+      "url": "/api/detalle-inscripcion",
+      "method": "POST",
+      "body": {
+        "inscripcionId": 1,
+        "grupoMateriaId": 1
+      }
+    },
+    {
+      "url": "/api/detalle-inscripcion/1",
+      "method": "GET"
+    },
+    {
+      "url": "/api/detalle-inscripcion/1",
+      "method": "PATCH",
+      "body": {
+        "grupoMateriaId": 2
+      }
+    }
+  ]

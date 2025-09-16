@@ -1,0 +1,510 @@
+[
+    {
+      "url": "http://localhost:3000/api/aula",
+      "method": "GET"
+    },
+    {
+      "url": "http://localhost:3000/api/aula",
+      "method": "POST",
+      "body": {
+        "codigo": "AULA-101"
+      }
+    },
+    {
+      "url": "http://localhost:3000/api/aula/1",
+      "method": "GET"
+    },
+    {
+      "url": "http://localhost:3000/api/aula/1",
+      "method": "PATCH",
+      "body": {
+        "codigo": "AULA-102"
+      }
+    },
+    {
+      "url": "http://localhost:3000/api/aula/1",
+      "method": "DELETE"
+    },
+    {
+      "url": "http://localhost:3000/api/boleta-horario",
+      "method": "GET"
+    },
+    {
+      "url": "http://localhost:3000/api/boleta-horario",
+      "method": "POST",
+      "body": {
+        "grupoMateriaId": 1,
+        "horarioId": 1
+      }
+    },
+    {
+      "url": "http://localhost:3000/api/boleta-horario/1/1",
+      "method": "GET"
+    },
+    {
+      "url": "http://localhost:3000/api/boleta-horario/1/1",
+      "method": "PATCH",
+      "body": {
+        "grupoMateriaId": 2,
+        "horarioId": 2
+      }
+    },
+    {
+      "url": "http://localhost:3000/api/boleta-horario/1/1",
+      "method": "DELETE"
+    },
+    {
+      "url": "http://localhost:3000/api/carrera",
+      "method": "GET"
+    },
+    {
+      "url": "http://localhost:3000/api/carrera",
+      "method": "POST",
+      "body": {
+        "nombre": "Ingeniería de Sistemas",
+        "codigo": "ISI"
+      }
+    },
+    {
+      "url": "http://localhost:3000/api/carrera/1",
+      "method": "GET"
+    },
+    {
+      "url": "http://localhost:3000/api/carrera/1",
+      "method": "PATCH",
+      "body": {
+        "nombre": "Ingeniería Industrial",
+        "codigo": "IND"
+      }
+    },
+    {
+      "url": "http://localhost:3000/api/carrera/1",
+      "method": "DELETE"
+    },
+    {
+      "url": "http://localhost:3000/api/detalle-inscripcion",
+      "method": "GET"
+    },
+    {
+      "url": "http://localhost:3000/api/detalle-inscripcion",
+      "method": "POST",
+      "body": {
+        "inscripcion": { "id": 1 },
+        "grupoMateria": { "id": 1 }
+      }
+    },
+    {
+      "url": "http://localhost:3000/api/detalle-inscripcion/1",
+      "method": "GET"
+    },
+    {
+      "url": "http://localhost:3000/api/detalle-inscripcion/1",
+      "method": "PATCH",
+      "body": {
+        "inscripcion": { "id": 2 },
+        "grupoMateria": { "id": 2 }
+      }
+    },
+    {
+      "url": "http://localhost:3000/api/detalle-inscripcion/1",
+      "method": "DELETE"
+    },
+    {
+      "url": "http://localhost:3000/api/docente",
+      "method": "GET"
+    },
+    {
+      "url": "http://localhost:3000/api/docente",
+      "method": "POST",
+      "body": {
+        "nombre": "Juan Carlos",
+        "apellido": "Pérez García",
+        "correo": "juan.perez@universidad.edu"
+      }
+    },
+    {
+      "url": "http://localhost:3000/api/docente/1",
+      "method": "GET"
+    },
+    {
+      "url": "http://localhost:3000/api/docente/1",
+      "method": "PATCH",
+      "body": {
+        "nombre": "María Elena",
+        "apellido": "González López",
+        "correo": "maria.gonzalez@universidad.edu"
+      }
+    },
+    {
+      "url": "http://localhost:3000/api/docente/1",
+      "method": "DELETE"
+    },
+    {
+      "url": "http://localhost:3000/api/estudiante",
+      "method": "GET"
+    },
+    {
+      "url": "http://localhost:3000/api/estudiante",
+      "method": "POST",
+      "body": {
+        "registro": "202012345",
+        "clave": "password123",
+        "nombre": "Ana María",
+        "apellido": "Sánchez Rodríguez",
+        "correo": "ana.sanchez@estudiante.edu"
+      }
+    },
+    {
+      "url": "http://localhost:3000/api/estudiante/1",
+      "method": "GET"
+    },
+    {
+      "url": "http://localhost:3000/api/estudiante/1",
+      "method": "PATCH",
+      "body": {
+        "nombre": "Ana Sofía",
+        "apellido": "Sánchez Morales",
+        "correo": "ana.morales@estudiante.edu"
+      }
+    },
+    {
+      "url": "http://localhost:3000/api/estudiante/1",
+      "method": "DELETE"
+    },
+    {
+      "url": "http://localhost:3000/api/gestion",
+      "method": "GET"
+    },
+    {
+      "url": "http://localhost:3000/api/gestion",
+      "method": "POST",
+      "body": {
+        "numero": 2024
+      }
+    },
+    {
+      "url": "http://localhost:3000/api/gestion/1",
+      "method": "GET"
+    },
+    {
+      "url": "http://localhost:3000/api/gestion/1",
+      "method": "PATCH",
+      "body": {
+        "numero": 2025
+      }
+    },
+    {
+      "url": "http://localhost:3000/api/gestion/1",
+      "method": "DELETE"
+    },
+    {
+      "url": "http://localhost:3000/api/grupo",
+      "method": "GET"
+    },
+    {
+      "url": "http://localhost:3000/api/grupo",
+      "method": "POST",
+      "body": {
+        "nombre": "A"
+      }
+    },
+    {
+      "url": "http://localhost:3000/api/grupo/1",
+      "method": "GET"
+    },
+    {
+      "url": "http://localhost:3000/api/grupo/1",
+      "method": "PATCH",
+      "body": {
+        "nombre": "B"
+      }
+    },
+    {
+      "url": "http://localhost:3000/api/grupo/1",
+      "method": "DELETE"
+    },
+    {
+      "url": "http://localhost:3000/api/grupo-materia",
+      "method": "GET"
+    },
+    {
+      "url": "http://localhost:3000/api/grupo-materia",
+      "method": "POST",
+      "body": {
+        "cupos": 30,
+        "materiaId": 1,
+        "docenteId": 1,
+        "grupoId": 1,
+        "periodoId": 1
+      }
+    },
+    {
+      "url": "http://localhost:3000/api/grupo-materia/1",
+      "method": "GET"
+    },
+    {
+      "url": "http://localhost:3000/api/grupo-materia/1",
+      "method": "PATCH",
+      "body": {
+        "cupos": 35,
+        "docenteId": 2
+      }
+    },
+    {
+      "url": "http://localhost:3000/api/grupo-materia/1",
+      "method": "DELETE"
+    },
+    {
+      "url": "http://localhost:3000/api/horario",
+      "method": "GET"
+    },
+    {
+      "url": "http://localhost:3000/api/horario",
+      "method": "POST",
+      "body": {
+        "hora_inicio": "08:00:00",
+        "hora_fin": "10:00:00",
+        "dia": "Lunes",
+        "aulaId": 1
+      }
+    },
+    {
+      "url": "http://localhost:3000/api/horario/1",
+      "method": "GET"
+    },
+    {
+      "url": "http://localhost:3000/api/horario/1",
+      "method": "PATCH",
+      "body": {
+        "hora_inicio": "09:00:00",
+        "hora_fin": "11:00:00",
+        "dia": "Martes"
+      }
+    },
+    {
+      "url": "http://localhost:3000/api/horario/1",
+      "method": "DELETE"
+    },
+    {
+      "url": "http://localhost:3000/api/inscripcion",
+      "method": "GET"
+    },
+    {
+      "url": "http://localhost:3000/api/inscripcion",
+      "method": "POST",
+      "body": {
+        "fechaInscripcion": "2024-03-15T10:00:00.000Z",
+        "estudianteId": 1
+      }
+    },
+    {
+      "url": "http://localhost:3000/api/inscripcion/1",
+      "method": "GET"
+    },
+    {
+      "url": "http://localhost:3000/api/inscripcion/1",
+      "method": "PATCH",
+      "body": {
+        "estudianteId": 2
+      }
+    },
+    {
+      "url": "http://localhost:3000/api/inscripcion/1",
+      "method": "DELETE"
+    },
+    {
+      "url": "http://localhost:3000/api/materia",
+      "method": "GET"
+    },
+    {
+      "url": "http://localhost:3000/api/materia",
+      "method": "POST",
+      "body": {
+        "nombre": "Programación I",
+        "sigla": "PRO-100",
+        "nivelId": 1
+      }
+    },
+    {
+      "url": "http://localhost:3000/api/materia/1",
+      "method": "GET"
+    },
+    {
+      "url": "http://localhost:3000/api/materia/1",
+      "method": "PATCH",
+      "body": {
+        "nombre": "Programación Básica",
+        "sigla": "PRO-101"
+      }
+    },
+    {
+      "url": "http://localhost:3000/api/materia/1",
+      "method": "DELETE"
+    },
+    {
+      "url": "http://localhost:3000/api/modulo",
+      "method": "GET"
+    },
+    {
+      "url": "http://localhost:3000/api/modulo",
+      "method": "POST",
+      "body": {
+        "nombre": "Módulo de Ingeniería",
+        "codigo": "MOD-ING-01",
+        "aulaId": 1
+      }
+    },
+    {
+      "url": "http://localhost:3000/api/modulo/1",
+      "method": "GET"
+    },
+    {
+      "url": "http://localhost:3000/api/modulo/1",
+      "method": "PATCH",
+      "body": {
+        "nombre": "Módulo de Ciencias",
+        "codigo": "MOD-CIE-01"
+      }
+    },
+    {
+      "url": "http://localhost:3000/api/modulo/1",
+      "method": "DELETE"
+    },
+    {
+      "url": "http://localhost:3000/api/nivel",
+      "method": "GET"
+    },
+    {
+      "url": "http://localhost:3000/api/nivel",
+      "method": "POST",
+      "body": {
+        "numero": 1,
+        "planEstudioId": 1
+      }
+    },
+    {
+      "url": "http://localhost:3000/api/nivel/1",
+      "method": "GET"
+    },
+    {
+      "url": "http://localhost:3000/api/nivel/1",
+      "method": "PATCH",
+      "body": {
+        "numero": 2
+      }
+    },
+    {
+      "url": "http://localhost:3000/api/nivel/1",
+      "method": "DELETE"
+    },
+    {
+      "url": "http://localhost:3000/api/nota",
+      "method": "GET"
+    },
+    {
+      "url": "http://localhost:3000/api/nota",
+      "method": "POST",
+      "body": {
+        "grupoMateriaId": 1,
+        "estudianteId": 1,
+        "numero": 85.50
+      }
+    },
+    {
+      "url": "http://localhost:3000/api/nota/1/1",
+      "method": "GET"
+    },
+    {
+      "url": "http://localhost:3000/api/nota/1/1",
+      "method": "PATCH",
+      "body": {
+        "numero": 90.75
+      }
+    },
+    {
+      "url": "http://localhost:3000/api/nota/1/1",
+      "method": "DELETE"
+    },
+    {
+      "url": "http://localhost:3000/api/periodo",
+      "method": "GET"
+    },
+    {
+      "url": "http://localhost:3000/api/periodo",
+      "method": "POST",
+      "body": {
+        "numero": 1,
+        "gestionId": 1
+      }
+    },
+    {
+      "url": "http://localhost:3000/api/periodo/1",
+      "method": "GET"
+    },
+    {
+      "url": "http://localhost:3000/api/periodo/1",
+      "method": "PATCH",
+      "body": {
+        "numero": 2
+      }
+    },
+    {
+      "url": "http://localhost:3000/api/periodo/1",
+      "method": "DELETE"
+    },
+    {
+      "url": "http://localhost:3000/api/plan-estudio",
+      "method": "GET"
+    },
+    {
+      "url": "http://localhost:3000/api/plan-estudio",
+      "method": "POST",
+      "body": {
+        "nombre": "Plan 2020 - ISI",
+        "carreraId": 1
+      }
+    },
+    {
+      "url": "http://localhost:3000/api/plan-estudio/1",
+      "method": "GET"
+    },
+    {
+      "url": "http://localhost:3000/api/plan-estudio/1",
+      "method": "PATCH",
+      "body": {
+        "nombre": "Plan 2024 - ISI Actualizado"
+      }
+    },
+    {
+      "url": "http://localhost:3000/api/plan-estudio/1",
+      "method": "DELETE"
+    },
+    {
+      "url": "http://localhost:3000/api/prerequisito",
+      "method": "GET"
+    },
+    {
+      "url": "http://localhost:3000/api/prerequisito",
+      "method": "POST",
+      "body": {
+        "materiaId": 2,
+        "materiaRequeridaId": 1
+      }
+    },
+    {
+      "url": "http://localhost:3000/api/prerequisito/2/1",
+      "method": "GET"
+    },
+    {
+      "url": "http://localhost:3000/api/prerequisito/2/1",
+      "method": "PATCH",
+      "body": {
+        "materiaId": 3,
+        "materiaRequeridaId": 1
+      }
+    },
+    {
+      "url": "http://localhost:3000/api/prerequisito/2/1",
+      "method": "DELETE"
+    }
+  ]

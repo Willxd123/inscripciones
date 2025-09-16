@@ -1,0 +1,8 @@
+#maxmemory 3gb                     Límite máximo de RAM para Redis (3GB)
+maxmemory-policy allkeys-lru     # Cuando se llena: elimina claves menos usadas
+save ""                          # Deshabilita snapshots (más velocidad)
+appendonly no                    # Deshabilita AOF logging (máximo rendimiento)
+tcp-backlog 65536               # Conexiones pendientes permitidas
+maxclients 20000                # Máximo 20,000 clientes simultáneos
+timeout 300                     # Desconectar clientes inactivos tras 5 min
+tcp-keepalive 300               # Mantener conexiones vivas

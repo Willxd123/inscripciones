@@ -1,3 +1,4 @@
+import { GenericWrapperService } from './../queue/generic-wrapper.service';
 import { AuthGuard } from './../auth/guard/auth.guard';
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { ModuloService } from './modulo.service';
@@ -9,30 +10,33 @@ import { ApiBearerAuth } from '@nestjs/swagger';
 @UseGuards(AuthGuard)
 @ApiBearerAuth()
 export class ModuloController {
-  constructor(private readonly moduloService: ModuloService) {}
-
+   private moduloWrapper: any;
+    constructor(private readonly genericWrapperService: GenericWrapperService) {
+      this.moduloWrapper =
+        this.genericWrapperService.createServiceWrapper('modulo');
+    }
   @Post()
   create(@Body() createModuloDto: CreateModuloDto) {
-    return this.moduloService.create(createModuloDto);
+    return this.moduloWrapper.create(createModuloDto);
   }
 
   @Get()
   findAll() {
-    return this.moduloService.findAll();
+    return this.moduloWrapper.findAll();
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.moduloService.findOne(+id);
+    return this.moduloWrapper.findOne(+id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateModuloDto: UpdateModuloDto) {
-    return this.moduloService.update(+id, updateModuloDto);
+    return this.moduloWrapper.update(+id, updateModuloDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.moduloService.remove(+id);
+    return this.moduloWrapper.remove(+id);
   }
 }

@@ -1,13 +1,13 @@
-import { IsNotEmpty, IsString, Length } from 'class-validator';
+import { IsNotEmpty, IsString, Length, IsOptional } from 'class-validator';
 
 export class CreateCarreraDto {
   @IsString()
   @IsNotEmpty()
-  @Length(1, 150)
+  @Length(1, 200) // Más permisivo
   nombre: string;
 
   @IsString()
-  @IsNotEmpty()
-  @Length(1, 20)
-  codigo: string;
+  @IsOptional() // Hacer opcional para generar automáticamente
+  @Length(1, 50) // Más permisivo
+  codigo?: string;
 }

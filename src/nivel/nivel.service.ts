@@ -18,13 +18,13 @@ export class NivelService {
   }
 
   findAll() {
-    return this.nivelRepository.find({ relations: ['plan', 'materias'] });
+    return this.nivelRepository.find({ relations: ['materias'] });
   }
 
   findOne(id: number) {
     return this.nivelRepository.findOne({ 
       where: { id }, 
-      relations: ['plan', 'materias'] 
+      relations: ['materias'] 
     });
   }
 

@@ -18,13 +18,13 @@ export class PlanEstudioService {
   }
 
   findAll() {
-    return this.planEstudioRepository.find({ relations: ['carrera', 'niveles'] });
+    return this.planEstudioRepository.find({ relations: ['carrera', 'materias', ]  });
   }
 
   findOne(id: number) {
     return this.planEstudioRepository.findOne({ 
       where: { id }, 
-      relations: ['carrera', 'niveles'] 
+      relations: ['carrera', 'materias', ] 
     });
   }
 

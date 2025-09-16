@@ -3,7 +3,7 @@ import { IsString, IsNotEmpty, MaxLength, IsInt, IsPositive } from 'class-valida
 export class CreatePlanEstudioDto {
   @IsString()
   @IsNotEmpty()
-  @MaxLength(30)
+  @MaxLength(200) // Más permisivo
   nombre: string;
 
   @IsInt()
