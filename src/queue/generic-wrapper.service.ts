@@ -1,3 +1,225 @@
+/* import { CarreraService } from './../carrera/carrera.service';
+import { Inject, Injectable, Logger } from '@nestjs/common';
+import { InjectQueue } from '@nestjs/bull';
+import { Queue } from 'bull';
+import { randomUUID } from 'crypto';
+import { QueueConfigService } from './queue-config.service';
+import { GENERIC_QUEUE, GENERIC_JOB_TYPES } from './generic-queue.processor';
+
+@Injectable()
+export class GenericWrapperService {
+  private readonly logger = new Logger(GenericWrapperService.name);
+  private readonly serviceRegistry: Map<string, any> = new Map();
+  constructor(
+    @InjectQueue(GENERIC_QUEUE) private genericQueue: Queue,
+    private readonly queueConfigService: QueueConfigService,
+    @Inject(CarreraService) private readonly carreraService: CarreraService,
+  ) {
+    // Debug logs
+    this.logger.log(`CarreraService inyectado: ${!!this.carreraService}`);
+
+    // Registrar servicios disponibles
+    this.serviceRegistry.set('carrera', this.carreraService);
+
+    this.logger.log(
+      `Registry después del registro: ${this.serviceRegistry.size}`,
+    );
+    this.logger.log(
+      `Carrera está registrado: ${this.serviceRegistry.has('carrera')}`,
+    );
+  }
+
+  // Factory method para crear wrapper de cualquier servicio
+  createServiceWrapper(serviceName: string) {
+    return {
+      create: (createDto: any) => this.handleCreate(serviceName, createDto),
+      findAll: () => this.handleFindAll(serviceName),
+      findOne: (id: number) => this.handleFindOne(serviceName, id),
+      update: (id: number, updateDto: any) =>
+        this.handleUpdate(serviceName, id, updateDto),
+      remove: (id: number) => this.handleRemove(serviceName, id),
+    };
+  }
+
+  private async handleCreate(serviceName: string, createDto: any) {
+    const shouldUseQueue =
+      await this.queueConfigService.shouldUseQueue(serviceName);
+
+    if (shouldUseQueue) {
+      this.logger.log(`Encolando creación de ${serviceName}`);
+
+      const job = await this.genericQueue.add(
+        GENERIC_JOB_TYPES.CREATE,
+        {
+          serviceName,
+          operation: 'create',
+          data: createDto,
+        },
+        {
+          jobId: randomUUID(), // Asignar un UUID único como ID del trabajo
+        },
+      );
+
+      return {
+        message: `${serviceName} encolado para creación`,
+        jobId: job.id,
+        status: 'queued',
+        data: createDto,
+      };
+    } else {
+      this.logger.log(`Ejecutando creación directa de ${serviceName}`);
+      const service = await this.getService(serviceName);
+      return await service.create(createDto);
+    }
+  }
+
+  private async handleFindAll(serviceName: string) {
+    const shouldUseQueue =
+      await this.queueConfigService.shouldUseQueue(serviceName);
+
+    if (shouldUseQueue) {
+      this.logger.log(`Encolando findAll de ${serviceName}`);
+
+      const job = await this.genericQueue.add(
+        GENERIC_JOB_TYPES.FIND_ALL,
+        {
+          serviceName,
+          operation: 'find-all',
+        },
+        {
+          jobId: randomUUID(), // Asignar un UUID único como ID del trabajo
+        },
+      );
+
+      return {
+        message: `${serviceName} encolado para consulta`,
+        jobId: job.id,
+        status: 'queued',
+      };
+    } else {
+      this.logger.log(`Ejecutando findAll directo de ${serviceName}`);
+      const service = await this.getService(serviceName);
+      return await service.findAll();
+    }
+  }
+
+  private async handleFindOne(serviceName: string, id: number) {
+    const shouldUseQueue =
+      await this.queueConfigService.shouldUseQueue(serviceName);
+
+    if (shouldUseQueue) {
+      this.logger.log(`Encolando findOne de ${serviceName} ID: ${id}`);
+
+      const job = await this.genericQueue.add(
+        GENERIC_JOB_TYPES.FIND_ONE,
+        {
+          serviceName,
+          operation: 'find-one',
+          id,
+        },
+        {
+          jobId: randomUUID(), // Asignar un UUID único como ID del trabajo
+        },
+      );
+
+      return {
+        message: `${serviceName} encolado para consulta por ID`,
+        jobId: job.id,
+        status: 'queued',
+        id,
+      };
+    } else {
+      this.logger.log(`Ejecutando findOne directo de ${serviceName} ID: ${id}`);
+      const service = await this.getService(serviceName);
+      return await service.findOne(id);
+    }
+  }
+
+  private async handleUpdate(serviceName: string, id: number, updateDto: any) {
+    const shouldUseQueue =
+      await this.queueConfigService.shouldUseQueue(serviceName);
+
+    if (shouldUseQueue) {
+      this.logger.log(`Encolando actualización de ${serviceName} ID: ${id}`);
+
+      const job = await this.genericQueue.add(
+        GENERIC_JOB_TYPES.UPDATE,
+        {
+          serviceName,
+          operation: 'update',
+          id,
+          data: updateDto,
+        },
+        {
+          jobId: randomUUID(), // Asignar un UUID único como ID del trabajo
+        },
+      );
+
+      return {
+        message: `${serviceName} encolado para actualización`,
+        jobId: job.id,
+        status: 'queued',
+        id,
+        data: updateDto,
+      };
+    } else {
+      this.logger.log(
+        `Ejecutando actualización directa de ${serviceName} ID: ${id}`,
+      );
+      const service = await this.getService(serviceName);
+      return await service.update(id, updateDto);
+    }
+  }
+
+  private async handleRemove(serviceName: string, id: number) {
+    const shouldUseQueue =
+      await this.queueConfigService.shouldUseQueue(serviceName);
+
+    if (shouldUseQueue) {
+      this.logger.log(`Encolando eliminación de ${serviceName} ID: ${id}`);
+
+      const job = await this.genericQueue.add(
+        GENERIC_JOB_TYPES.DELETE,
+        {
+          serviceName,
+          operation: 'delete',
+          id,
+        },
+        {
+          jobId: randomUUID(), // Asignar un UUID único como ID del trabajo
+        },
+      );
+
+      return {
+        message: `${serviceName} encolado para eliminación`,
+        jobId: job.id,
+        status: 'queued',
+        id,
+      };
+    } else {
+      this.logger.log(
+        `Ejecutando eliminación directa de ${serviceName} ID: ${id}`,
+      );
+      const service = await this.getService(serviceName);
+      return await service.remove(id);
+    }
+  }
+
+  private async getService(serviceName: string): Promise<any> {
+    const service = this.serviceRegistry.get(serviceName);
+    if (!service) {
+      throw new Error(`Service ${serviceName} not registered in wrapper`);
+    }
+    return service;
+  }
+
+  // Método para registrar nuevos servicios dinámicamente
+  registerService(serviceName: string, service: any): void {
+    this.serviceRegistry.set(serviceName, service);
+    this.logger.log(`Servicio ${serviceName} registrado en el wrapper`);
+  }
+}
+ */
 import { DetalleInscripcionService } from './../detalle-inscripcion/detalle-inscripcion.service';
 import { PrerequisitoService } from './../prerequisito/prerequisito.service';
 import { PeriodoService } from './../periodo/periodo.service';
@@ -20,7 +242,7 @@ import { Inject, Injectable, Logger } from '@nestjs/common';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
 import { QueueConfigService } from './queue-config.service';
-import { GENERIC_QUEUE, GENERIC_JOB_TYPES } from './generic-queue.processor';
+import { GENERIC_QUEUE } from './generic-queue.processor';
 import { randomUUID } from 'crypto';
 
 @Injectable()
@@ -93,15 +315,15 @@ export class GenericWrapperService {
     };
   }
 
+  // TODOS LOS MÉTODOS USAN EL MISMO FORMATO - SIN TIPO ESPECÍFICO
   private async handleCreate(serviceName: string, createDto: any) {
-    const shouldUseQueue =
-      await this.queueConfigService.shouldUseQueue(serviceName);
+    const shouldUseQueue = await this.queueConfigService.shouldUseQueue(serviceName);
 
     if (shouldUseQueue) {
       const jobId = randomUUID();
 
+      // ✅ FORMATO CONSISTENTE - SIN TIPO
       await this.genericQueue.add(
-        GENERIC_JOB_TYPES.CREATE,
         {
           serviceName,
           operation: 'create',
@@ -111,6 +333,7 @@ export class GenericWrapperService {
       );
 
       const isPaused = await this.queueConfigService.isQueuePaused(serviceName);
+      this.logger.log(`🔥 Trabajo CREATE encolado para ${serviceName} - Job ID: ${jobId}`);
 
       return {
         message: `${serviceName} en proceso`,
@@ -125,14 +348,13 @@ export class GenericWrapperService {
   }
 
   private async handleFindAll(serviceName: string) {
-    const shouldUseQueue =
-      await this.queueConfigService.shouldUseQueue(serviceName);
+    const shouldUseQueue = await this.queueConfigService.shouldUseQueue(serviceName);
 
     if (shouldUseQueue) {
       const jobId = randomUUID();
 
+      // ✅ FORMATO CONSISTENTE - SIN TIPO
       await this.genericQueue.add(
-        GENERIC_JOB_TYPES.FIND_ALL,
         {
           serviceName,
           operation: 'find-all',
@@ -141,6 +363,7 @@ export class GenericWrapperService {
       );
 
       const isPaused = await this.queueConfigService.isQueuePaused(serviceName);
+      this.logger.log(`🔥 Trabajo FIND_ALL encolado para ${serviceName} - Job ID: ${jobId}`);
 
       return {
         message: `${serviceName} en proceso`,
@@ -155,14 +378,13 @@ export class GenericWrapperService {
   }
 
   private async handleFindOne(serviceName: string, id: number) {
-    const shouldUseQueue =
-      await this.queueConfigService.shouldUseQueue(serviceName);
+    const shouldUseQueue = await this.queueConfigService.shouldUseQueue(serviceName);
 
     if (shouldUseQueue) {
       const jobId = randomUUID();
 
+      // ✅ FORMATO CONSISTENTE - SIN TIPO
       await this.genericQueue.add(
-        GENERIC_JOB_TYPES.FIND_ONE,
         {
           serviceName,
           operation: 'find-one',
@@ -172,6 +394,7 @@ export class GenericWrapperService {
       );
 
       const isPaused = await this.queueConfigService.isQueuePaused(serviceName);
+      this.logger.log(`🔥 Trabajo FIND_ONE encolado para ${serviceName} - Job ID: ${jobId}`);
 
       return {
         message: `${serviceName} en proceso`,
@@ -186,14 +409,13 @@ export class GenericWrapperService {
   }
 
   private async handleUpdate(serviceName: string, id: number, updateDto: any) {
-    const shouldUseQueue =
-      await this.queueConfigService.shouldUseQueue(serviceName);
+    const shouldUseQueue = await this.queueConfigService.shouldUseQueue(serviceName);
 
     if (shouldUseQueue) {
       const jobId = randomUUID();
 
+      // ✅ FORMATO CONSISTENTE - SIN TIPO
       await this.genericQueue.add(
-        GENERIC_JOB_TYPES.UPDATE,
         {
           serviceName,
           operation: 'update',
@@ -204,6 +426,7 @@ export class GenericWrapperService {
       );
 
       const isPaused = await this.queueConfigService.isQueuePaused(serviceName);
+      this.logger.log(`🔥 Trabajo UPDATE encolado para ${serviceName} - Job ID: ${jobId}`);
 
       return {
         message: `${serviceName} en proceso`,
@@ -218,14 +441,13 @@ export class GenericWrapperService {
   }
 
   private async handleRemove(serviceName: string, id: number) {
-    const shouldUseQueue =
-      await this.queueConfigService.shouldUseQueue(serviceName);
+    const shouldUseQueue = await this.queueConfigService.shouldUseQueue(serviceName);
 
     if (shouldUseQueue) {
       const jobId = randomUUID();
 
+      // ✅ FORMATO CONSISTENTE - SIN TIPO
       await this.genericQueue.add(
-        GENERIC_JOB_TYPES.DELETE,
         {
           serviceName,
           operation: 'delete',
@@ -235,6 +457,7 @@ export class GenericWrapperService {
       );
 
       const isPaused = await this.queueConfigService.isQueuePaused(serviceName);
+      this.logger.log(`🔥 Trabajo DELETE encolado para ${serviceName} - Job ID: ${jobId}`);
 
       return {
         message: `${serviceName} en proceso`,
@@ -245,40 +468,6 @@ export class GenericWrapperService {
     } else {
       const service = await this.getService(serviceName);
       return await service.remove(id);
-    }
-  }
-
-  /**
-   * Determina el estado real de un trabajo recién encolado
-   */
-  private async determineJobStatus(job: any): Promise<'queued' | 'processing'> {
-    try {
-      // Verificar si ya comenzó a procesarse inmediatamente
-      if (job.processedOn) {
-        return 'processing';
-      }
-
-      // Verificar si la cola está pausada
-      const isPaused = await this.genericQueue.isPaused();
-      if (isPaused) {
-        return 'queued';
-      }
-
-      // Verificar si hay trabajos activos (procesándose actualmente)
-      const activeJobs = await this.genericQueue.getActive();
-
-      // Si hay trabajos activos, este trabajo está en cola esperando
-      if (activeJobs.length > 0) {
-        return 'queued';
-      }
-
-      // Si no hay trabajos activos y la cola no está pausada,
-      // probablemente comenzará a procesarse inmediatamente
-      return 'processing';
-    } catch (error) {
-      this.logger.warn(`Error determinando estado del job ${job.id}:`, error);
-      // En caso de error, asumir que está en cola
-      return 'queued';
     }
   }
 
@@ -294,4 +483,4 @@ export class GenericWrapperService {
     this.serviceRegistry.set(serviceName, service);
     this.logger.log(`Servicio ${serviceName} registrado en el wrapper`);
   }
-}
+} 

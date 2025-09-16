@@ -1,4 +1,4 @@
-import { IsInt, IsPositive, IsNumber, Min, Max } from 'class-validator';
+import { IsInt, IsPositive, IsNumber, Min, Max, IsOptional } from 'class-validator';
 
 export class CreateNotaDto {
   @IsInt()
@@ -9,8 +9,9 @@ export class CreateNotaDto {
   @IsPositive()
   estudianteId: number;
 
-  @IsNumber({ maxDecimalPlaces: 2 })
+  @IsNumber()
+  @IsOptional() // Hacer opcional con valor por defecto
   @Min(0)
   @Max(100)
-  numero: number;
+  numero?: number;
 }

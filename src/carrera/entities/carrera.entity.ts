@@ -9,7 +9,7 @@ export class Carrera {
   @Column({ length: 150 })
   nombre: string;
 
-  @Column({ length: 20, unique: true })
+  @Column({ length: 20 })
   codigo: string;
 
   @OneToMany(() => PlanEstudio, (p) => p.carrera)

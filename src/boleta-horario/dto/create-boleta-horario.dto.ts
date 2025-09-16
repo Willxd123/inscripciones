@@ -1,11 +1,13 @@
-import { IsInt, IsPositive } from 'class-validator';
+import { IsInt, IsPositive, IsOptional } from 'class-validator';
 
 export class CreateBoletaHorarioDto {
   @IsInt()
   @IsPositive()
-  grupoMateriaId: number;
+  @IsOptional() // Hacer opcional en caso de que falte
+  grupoMateriaId?: number;
 
   @IsInt()
   @IsPositive()
-  horarioId: number;
+  @IsOptional() // Hacer opcional en caso de que falte
+  horarioId?: number;
 }

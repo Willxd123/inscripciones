@@ -1,8 +1,5 @@
 [
-  {
-    "url": "http://localhost:3000/api/carrera",
-    "method": "GET"
-  },
+
   {
     "url": "http://localhost:3000/api/carrera",
     "method": "POST",
@@ -20,9 +17,5 @@
       "telefono": 700000,
       "registro": 100000
     }
-  },
-  {
-    "url": "http://localhost:3000/api/carrera/3",
-    "method": "DELETE"
   }
 ]

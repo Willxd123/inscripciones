@@ -29,11 +29,29 @@ import {
 import { GenericWrapperService } from './generic-wrapper.service';
 import { CarreraModule } from '../carrera/carrera.module';
 
+// Función helper para manejar retención configurable
+function parseRetentionValue(envValue: string | undefined, defaultValue: number): number | false {
+  if (!envValue) return defaultValue;
+  if (envValue.toLowerCase() === 'false') return false;
+  const parsed = parseInt(envValue, 10);
+  return isNaN(parsed) ? defaultValue : parsed;
+}
+
 @Module({
   imports: [
     TypeOrmModule.forFeature([QueueConfig]),
     BullModule.registerQueue({
       name: GENERIC_QUEUE,
+      // Configuraciones adicionales para mejor rendimiento
+      defaultJobOptions: {
+        removeOnComplete: parseRetentionValue(process.env.QUEUE_COMPLETED_RETENTION, 100),
+        removeOnFail: parseRetentionValue(process.env.QUEUE_FAILED_RETENTION, 50),
+        attempts: parseInt(process.env.QUEUE_DEFAULT_ATTEMPTS || '2'),
+        backoff: {
+          type: 'exponential',
+          delay: parseInt(process.env.QUEUE_DEFAULT_DELAY || '1000'),
+        },
+      },
     }),
     forwardRef(() => AuthModule),
     forwardRef(() => CarreraModule),

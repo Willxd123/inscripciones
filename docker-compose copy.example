@@ -1,0 +1,105 @@
+services:
+  # Academic Service optimizado para 100k peticiones
+  academic-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+    container_name: academic-service
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=development
+      - DATABASE_HOST=${DATABASE_HOST}
+      - DATABASE_PORT=${DATABASE_PORT}
+      - DATABASE_USER=${DATABASE_USER}
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+      - DATABASE_NAME=${DATABASE_NAME}
+      - DATABASE_SSL=${DATABASE_SSL}
+      - DATABASE_URL=${DATABASE_URL}
+      - PORT=3000
+      # Redis configuration
+      - REDIS_HOST=redis-academic
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=
+      # CONFIGURACIONES CRÍTICAS para 100k peticiones:
+      - NODE_OPTIONS=--max-old-space-size=8192
+      - UV_THREADPOOL_SIZE=128
+      # Rate limiting
+      - RATE_LIMIT_MAX_REQUESTS=1000
+      - RATE_LIMIT_WINDOW_MS=60000
+      # Database pool
+      - DATABASE_POOL_MAX=20
+      - DATABASE_POOL_MIN=5
+      # Queue optimizations
+      - QUEUE_CONCURRENCY=10
+      - QUEUE_COMPLETED_RETENTION=1000
+      - QUEUE_FAILED_RETENTION=500
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    networks:
+      - academic-network
+    depends_on:
+      - redis-academic
+    command: yarn start:dev
+    # Límites de recursos para 100k peticiones:
+    deploy:
+      resources:
+        limits:
+          memory: 8G        # 8GB para Node.js
+          cpus: '4.0'       # 4 CPUs
+        reservations:
+          memory: 4G
+          cpus: '2.0'
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/queue/status"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Redis OPTIMIZADO para 100k peticiones
+  redis-academic:
+    image: redis:7-alpine
+    container_name: redis-academic
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+      - ./redis.conf:/usr/local/etc/redis/redis.conf:ro
+    networks:
+      - academic-network
+    # COMANDO OPTIMIZADO para alta carga:
+    command: redis-server /usr/local/etc/redis/redis.conf
+    # Límites de recursos para Redis:
+    deploy:
+      resources:
+        limits:
+          memory: 4G        # 4GB para Redis
+          cpus: '2.0'       # 2 CPUs
+        reservations:
+          memory: 2G
+          cpus: '1.0'
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
+    healthcheck:
+      test: ["CMD", "redis-cli", "--latency-history", "-i", "1"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+
+volumes:
+  redis-data:
+    driver: local
+
+networks:
+  academic-network:
+    driver: bridge

@@ -2,8 +2,9 @@ import { IsInt, IsPositive, IsOptional } from 'class-validator';
 
 export class CreateGrupoMateriaDto {
   @IsInt()
+  @IsOptional() // Opcional con valor por defecto
   @IsPositive()
-  cupos: number;
+  cupos?: number;
 
   @IsInt()
   @IsPositive()

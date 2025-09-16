@@ -13,7 +13,7 @@ export class PeriodoController {
   private periodoWrapper: any;
     constructor(private readonly genericWrapperService: GenericWrapperService) {
       this.periodoWrapper =
-        this.genericWrapperService.createServiceWrapper('nota');
+        this.genericWrapperService.createServiceWrapper('periodo');
     }
   @Post()
   create(@Body() createPeriodoDto: CreatePeriodoDto) {

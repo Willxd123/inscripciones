@@ -3,12 +3,12 @@ import { IsString, IsNotEmpty, MaxLength, IsOptional, IsInt, IsPositive } from '
 export class CreateMateriaDto {
   @IsString()
   @IsNotEmpty()
-  @MaxLength(150)
+  @MaxLength(250) // Más permisivo
   nombre: string;
 
   @IsString()
   @IsNotEmpty()
-  @MaxLength(20)
+  @MaxLength(50) // Más permisivo
   sigla: string;
 
   @IsInt()
