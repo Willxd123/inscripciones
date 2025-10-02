@@ -11,8 +11,4 @@ export class CreateModuloDto {
   @MaxLength(100) // Más permisivo
   codigo?: string;
 
-  @IsInt()
-  @IsPositive()
-  @IsOptional() // Hacer opcional
-  aulaId?: number;
 }

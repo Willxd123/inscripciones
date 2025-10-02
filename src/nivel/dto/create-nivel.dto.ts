@@ -6,7 +6,5 @@ export class CreateNivelDto {
   @IsPositive()
   numero?: number;
 
-  @IsInt()
-  @IsPositive()
-  planEstudioId: number;
+
 }

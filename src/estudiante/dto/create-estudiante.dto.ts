@@ -1,27 +1,31 @@
-import { IsString, IsNotEmpty, MaxLength, IsEmail, MinLength, IsOptional } from 'class-validator';
+import { IsString, IsNotEmpty, MaxLength, IsEmail, MinLength, IsOptional, IsInt, IsPositive } from 'class-validator';
 
 export class CreateEstudianteDto {
   @IsString()
   @IsNotEmpty()
-  @MaxLength(100) // Más permisivo
+  @MaxLength(30)
   registro: string;
 
   @IsString()
-  @IsOptional() // Completamente opcional
-  @MinLength(1) // Menos restrictivo
+  @IsOptional()
   clave?: string;
 
   @IsString()
   @IsNotEmpty()
-  @MaxLength(200) // Más permisivo
+  @MaxLength(120)
   nombre: string;
 
   @IsString()
   @IsNotEmpty()
-  @MaxLength(200) // Más permisivo
+  @MaxLength(120)
   apellido: string;
 
-  @IsString() // Remover @IsEmail para ser más flexible
-  @MaxLength(250) // Más permisivo
+  @IsString()
+  @MaxLength(150)
   correo: string;
+
+  @IsInt()
+  @IsPositive()
+  @IsOptional()
+  planEstudioId?: number; // Agregar esta línea
 }

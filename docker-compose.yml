@@ -1,8 +1,7 @@
 services:
-  # Solo Redis
   redis-academic:
     image: redis:7-alpine
-    container_name: redis-academic
+    container_name: redis-academic-extreme
     restart: unless-stopped
     ports:
       - "6379:6379"
@@ -10,23 +9,35 @@ services:
       - redis-data:/data
       - ./redis.conf:/usr/local/etc/redis/redis.conf:ro
     command: redis-server /usr/local/etc/redis/redis.conf
+    # Recursos máximos para tu máquina local
     deploy:
       resources:
         limits:
-          memory: 4G
-          cpus: '2.0'
-        reservations:
-          memory: 2G
-          cpus: '1.0'
+          memory: 8G
+          cpus: '4.0'
+    # Sin restricciones para desarrollo local
     ulimits:
       nofile:
-        soft: 65536
-        hard: 65536
+        soft: 1048576
+        hard: 1048576
+      memlock:
+        soft: -1
+        hard: -1
+    environment:
+      - REDIS_MAXMEMORY=6gb
+      - REDIS_MAXCLIENTS=100000
+    # Configuración de red optimizada para local
+    networks:
+      - redis_network
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
-      interval: 10s
-      timeout: 3s
-      retries: 3
+      interval: 2s
+      timeout: 1s
+      retries: 2
+
+networks:
+  redis_network:
+    driver: bridge
 
 volumes:
   redis-data:
