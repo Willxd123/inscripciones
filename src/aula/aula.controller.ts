@@ -1,4 +1,4 @@
-import { GenericWrapperService } from './../queue/generic-wrapper.service';
+import { EnvolventeGenericaService } from './../cola/envolvente-generica.service';
 import { AuthGuard } from './../auth/guard/auth.guard';
 import {
   Controller,
@@ -21,8 +21,8 @@ import { ApiBearerAuth } from '@nestjs/swagger';
 export class AulaController {
   private aulaWrapper: any;
 
-  constructor(private readonly genericWrapperService: GenericWrapperService) {
-    this.aulaWrapper = this.genericWrapperService.createServiceWrapper('aula');
+  constructor(private readonly envolventeGenericaService: EnvolventeGenericaService) {
+    this.aulaWrapper = this.envolventeGenericaService.crearEnvolventeServicio('aula');
   }
 
   @Post()

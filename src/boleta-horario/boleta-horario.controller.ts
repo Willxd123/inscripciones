@@ -1,4 +1,4 @@
-import { GenericWrapperService } from './../queue/generic-wrapper.service';
+import { EnvolventeGenericaService } from './../cola/envolvente-generica.service';
 import { AuthGuard } from './../auth/guard/auth.guard';
 import {
   Controller,
@@ -21,9 +21,9 @@ import { ApiBearerAuth } from '@nestjs/swagger';
 export class BoletaHorarioController {
   private boletaHorarioWrapper: any;
 
-  constructor(private readonly genericWrapperService: GenericWrapperService) {
+  constructor(private readonly envolventeGenericaService: EnvolventeGenericaService) {
     this.boletaHorarioWrapper =
-      this.genericWrapperService.createServiceWrapper('boleta-horario');
+      this.envolventeGenericaService.crearEnvolventeServicio('boleta-horario');
   }
   @Post()
   create(@Body() createBoletaHorarioDto: CreateBoletaHorarioDto) {

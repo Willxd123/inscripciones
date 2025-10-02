@@ -1,10 +1,10 @@
 import { IsString, IsBoolean, IsNotEmpty } from 'class-validator';
 
-export class SetQueueModeDto {
+export class EstablecerModoColaDto {
   @IsString()
   @IsNotEmpty()
-  serviceName: string;
+  nombreServicio: string;
 
   @IsBoolean()
-  useQueue: boolean;
+  usarCola: boolean;
 }

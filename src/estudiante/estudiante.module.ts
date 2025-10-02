@@ -1,4 +1,4 @@
-import { QueueModule } from './../queue/queue.module';
+import { ColaModule } from './../cola/cola.module';
 import { AuthModule } from './../auth/auth.module';
 import { Module, forwardRef } from '@nestjs/common';
 import { EstudianteService } from './estudiante.service';
@@ -12,7 +12,7 @@ import { Nota } from '../nota/entities/nota.entity';
   imports: [
     TypeOrmModule.forFeature([Estudiante, Inscripcion, Nota]),
     forwardRef(() => AuthModule),
-    forwardRef(() => QueueModule),
+    forwardRef(() => ColaModule),
   ],
   controllers: [EstudianteController],
   providers: [EstudianteService],

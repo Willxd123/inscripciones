@@ -1,4 +1,4 @@
-import { QueueModule } from './../queue/queue.module';
+import { ColaModule } from './../cola/cola.module';
 import { AuthModule } from './../auth/auth.module';
 import { forwardRef, Module } from '@nestjs/common';
 import { GestionService } from './gestion.service';
@@ -9,7 +9,7 @@ import { Periodo } from '../periodo/entities/periodo.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Gestion, Periodo]),forwardRef(() => AuthModule),forwardRef(() => QueueModule),
+    TypeOrmModule.forFeature([Gestion, Periodo]),forwardRef(() => AuthModule),forwardRef(() => ColaModule),
   ],
   controllers: [GestionController],
   providers: [GestionService],

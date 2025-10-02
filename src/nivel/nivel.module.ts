@@ -1,4 +1,4 @@
-import { QueueModule } from './../queue/queue.module';
+import { ColaModule } from './../cola/cola.module';
 import { AuthModule } from './../auth/auth.module';
 import { forwardRef, Module } from '@nestjs/common';
 import { NivelService } from './nivel.service';
@@ -10,7 +10,7 @@ import { Materia } from '../materia/entities/materia.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Nivel, PlanEstudio, Materia]),forwardRef(() => AuthModule),forwardRef(() => QueueModule),
+    TypeOrmModule.forFeature([Nivel, PlanEstudio, Materia]),forwardRef(() => AuthModule),forwardRef(() => ColaModule),
   ],
   controllers: [NivelController],
   providers: [NivelService],

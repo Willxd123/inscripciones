@@ -1,4 +1,5 @@
-import { QueueModule } from './queue/queue.module';
+import { ColaModule } from './cola/cola.module';
+
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -30,7 +31,7 @@ import { DetalleInscripcionModule } from './detalle-inscripcion/detalle-inscripc
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    // ⚠️ YA NO USAR BullModule.forRoot() AQUÍ - Lo maneja QueueModule
+    // YA NO USAR BullModule.forRoot() AQUÍ - Lo maneja ColaModule
     // Configuración TypeORM optimizada
     TypeOrmModule.forRoot({
       type: 'postgres',
@@ -107,8 +108,7 @@ import { DetalleInscripcionModule } from './detalle-inscripcion/detalle-inscripc
     SeedModule,
     AuthModule,
     DetalleInscripcionModule,
-    // 🔥 NUEVO: QueueModule dinámico (debe ir después de los módulos de servicios)
-    QueueModule.forRoot(),
+    ColaModule.forRoot(),
   ],
   controllers: [AppController],
   providers: [AppService],

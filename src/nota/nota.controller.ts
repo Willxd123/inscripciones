@@ -1,4 +1,4 @@
-import { GenericWrapperService } from './../queue/generic-wrapper.service';
+import { EnvolventeGenericaService } from './../cola/envolvente-generica.service';
 import { AuthGuard } from './../auth/guard/auth.guard';
 import {
   Controller,
@@ -20,8 +20,8 @@ import { ApiBearerAuth } from '@nestjs/swagger';
 @ApiBearerAuth()
 export class NotaController {
   private notaWrapper: any;
-  constructor(private readonly genericWrapperService: GenericWrapperService) {
-    this.notaWrapper = this.genericWrapperService.createServiceWrapper('nota');
+  constructor(private readonly envolventeGenericaService: EnvolventeGenericaService) {
+    this.notaWrapper = this.envolventeGenericaService.crearEnvolventeServicio('nota');
   }
   @Post()
   create(@Body() createNotaDto: CreateNotaDto) {
