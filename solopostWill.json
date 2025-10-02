@@ -1,158 +1,159 @@
 [
-    {
-      "url": "/api/carrera",
-      "method": "POST",
-      "body": {
-        "nombre": "string",
-        "codigo": "string"
-      }
-    },
-    {
-      "url": "/api/aula",
-      "method": "POST",
-      "body": {
-        "codigo": "string"
-      }
-    },
-    {
-      "url": "/api/estudiante",
-      "method": "POST",
-      "body": {
-        "registro": "string",
-        "nombre": "string",
-        "apellido": "string",
-        "correo": "string",
-        "clave": "string"
-      }
-    },
-    {
-      "url": "/api/docente",
-      "method": "POST",
-      "body": {
-        "nombre": "string",
-        "apellido": "string",
-        "correo": "string"
-      }
-    },
-    {
-      "url": "/api/gestion",
-      "method": "POST",
-      "body": {
-        "numero": 2025
-      }
-    },
-    {
-      "url": "/api/plan-estudio",
-      "method": "POST",
-      "body": {
-        "nombre": "string",
-        "carreraId": 1
-      }
-    },
-    {
-      "url": "/api/nivel",
-      "method": "POST",
-      "body": {
-        "numero": 1,
-        "planEstudioId": 1
-      }
-    },
-    {
-      "url": "/api/materia",
-      "method": "POST",
-      "body": {
-        "nombre": "string",
-        "sigla": "string",
-        "nivelId": 1
-      }
-    },
-    {
-      "url": "/api/modulo",
-      "method": "POST",
-      "body": {
-        "nombre": "string",
-        "codigo": "string",
-        "aulaId": 1
-      }
-    },
-    {
-      "url": "/api/grupo",
-      "method": "POST",
-      "body": {
-        "nombre": "string"
-      }
-    },
-    {
-      "url": "/api/periodo",
-      "method": "POST",
-      "body": {
-        "numero": 1,
-        "gestionId": 1
-      }
-    },
-    {
-      "url": "/api/horario",
-      "method": "POST",
-      "body": {
-        "hora_inicio": "08:00:00",
-        "hora_fin": "10:00:00",
-        "dia": "string",
-        "aulaId": 1
-      }
-    },
-    {
-      "url": "/api/grupo-materia",
-      "method": "POST",
-      "body": {
-        "cupos": 30,
-        "materiaId": 1,
-        "docenteId": 1,
-        "grupoId": 1,
-        "periodoId": 1
-      }
-    },
-    {
-      "url": "/api/boleta-horario",
-      "method": "POST",
-      "body": {
-        "grupoMateriaId": 1,
-        "horarioId": 1
-      }
-    },
-    {
-      "url": "/api/inscripcion",
-      "method": "POST",
-      "body": {
-        "estudianteId": 1,
-        "detalles": [
-          { "grupoMateriaId": 1 },
-          { "grupoMateriaId": 2 }
-        ]
-      }
-    },
-    {
-      "url": "/api/nota",
-      "method": "POST",
-      "body": {
-        "grupoMateriaId": 1,
-        "estudianteId": 1,
-        "numero": 85.5
-      }
-    },
-    {
-      "url": "/api/prerequisito",
-      "method": "POST",
-      "body": {
-        "materiaId": 2,
-        "materiaRequeridaId": 1
-      }
-    },
-    {
-      "url": "/api/detalle-inscripcion",
-      "method": "POST",
-      "body": {
-        "inscripcionId": 1,
-        "grupoMateriaId": 1
-      }
+  {
+    "url": "/api/carrera",
+    "method": "POST",
+    "body": {
+      "nombre": "Ingeniería de Sistemas",
+      "codigo": "INS"
     }
-  ]
+  },
+  {
+    "url": "/api/modulo",
+    "method": "POST",
+    "body": {
+      "nombre": "Módulo A",
+      "codigo": "MOD-A"
+    }
+  },
+  {
+    "url": "/api/aula",
+    "method": "POST",
+    "body": {
+      "codigo": "A-101",
+      "moduloId": 1
+    }
+  },
+  {
+    "url": "/api/plan-estudio",
+    "method": "POST",
+    "body": {
+      "nombre": "Plan 2024",
+      "carreraId": 1
+    }
+  },
+  {
+    "url": "/api/nivel",
+    "method": "POST",
+    "body": {
+      "numero": 1
+    }
+  },
+  {
+    "url": "/api/materia",
+    "method": "POST",
+    "body": {
+      "nombre": "Programación I",
+      "sigla": "PRG1",
+      "nivelId": 1,
+      "planEstudioId": 1
+    }
+  },
+  {
+    "url": "/api/estudiante",
+    "method": "POST",
+    "body": {
+      "registro": "202412345",
+      "nombre": "Juan Carlos",
+      "apellido": "Pérez García",
+      "correo": "juan.perez@email.com",
+      "clave": "password123",
+      "planEstudioId": 1
+    }
+  },
+  {
+    "url": "/api/docente",
+    "method": "POST",
+    "body": {
+      "nombre": "María Elena",
+      "apellido": "González López",
+      "correo": "maria.gonzalez@universidad.edu"
+    }
+  },
+  {
+    "url": "/api/gestion",
+    "method": "POST",
+    "body": {
+      "numero": 2025
+    }
+  },
+  {
+    "url": "/api/periodo",
+    "method": "POST",
+    "body": {
+      "numero": 1,
+      "gestionId": 1
+    }
+  },
+  {
+    "url": "/api/grupo",
+    "method": "POST",
+    "body": {
+      "nombre": "Grupo A"
+    }
+  },
+  {
+    "url": "/api/grupo-materia",
+    "method": "POST",
+    "body": {
+      "cupos": 30,
+      "materiaId": 1,
+      "docenteId": 1,
+      "grupoId": 1,
+      "periodoId": 1
+    }
+  },
+  {
+    "url": "/api/horario",
+    "method": "POST",
+    "body": {
+      "hora_inicio": "08:00:00",
+      "hora_fin": "10:00:00",
+      "dia": "Lunes",
+      "aulaId": 1
+    }
+  },
+  {
+    "url": "/api/boleta-horario",
+    "method": "POST",
+    "body": {
+      "grupoMateriaId": 1,
+      "horarioId": 1
+    }
+  },
+  {
+    "url": "/api/inscripcion",
+    "method": "POST",
+    "body": {
+      "estudianteId": 1,
+      "detalles": [
+        { "grupoMateriaId": 1 },
+        { "grupoMateriaId": 2 }
+      ]
+    }
+  },
+  {
+    "url": "/api/detalle-inscripcion",
+    "method": "POST",
+    "body": {
+      "inscripcionId": 1,
+      "grupoMateriaId": 1
+    }
+  },
+  {
+    "url": "/api/nota",
+    "method": "POST",
+    "body": {
+      "grupoMateriaId": 1,
+      "estudianteId": 1,
+      "numero": 85.5
+    }
+  },
+  {
+    "url": "/api/prerequisito",
+    "method": "POST",
+    "body": {
+      "materiaId": 1,
+      "materiaRequeridaId": 1
+    }
+  }
+]

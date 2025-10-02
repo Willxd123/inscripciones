@@ -1,8 +1,12 @@
-import { IsString, IsNotEmpty, MaxLength, IsOptional } from 'class-validator';
+import { IsString, IsNotEmpty, MaxLength, IsOptional, IsInt, IsPositive } from 'class-validator';
 
 export class CreateAulaDto {
   @IsString()
-  @IsOptional() // Opcional para generar automáticamente
-  @MaxLength(100) // Más permisivo
+  @IsOptional()
+  @MaxLength(30)
   codigo?: string;
+
+  @IsInt()
+  @IsPositive()
+  moduloId: number; // Agregar esta línea
 }

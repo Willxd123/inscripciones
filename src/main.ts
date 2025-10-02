@@ -6,66 +6,72 @@ import { SeedService } from './seeders/seed.service';
 
 // Imports para Bull Dashboard
 import { createBullBoard } from '@bull-board/api';
-import { BullAdapter } from '@bull-board/api/bullAdapter';
+import { BullMQAdapter } from '@bull-board/api/bullMQAdapter';
 import { ExpressAdapter } from '@bull-board/express';
-import { Queue } from 'bull';
+import { Queue } from 'bullmq';
 
 // CRÍTICO: Rate limiting para 100k peticiones
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 const compression = require('compression');
+import * as fs from 'fs';
+import * as path from 'path';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
-    // Configuraciones para alto rendimiento
-    logger: process.env.NODE_ENV === 'production' ? ['error', 'warn'] : ['log', 'debug', 'error', 'verbose', 'warn'],
+    logger: process.env.NODE_ENV === 'production' ? ['error', 'warn'] : ['error', 'warn', 'log'], 
   });
   
   // SEGURIDAD: Helmet para headers de seguridad
   app.use(helmet({
-    contentSecurityPolicy: false, // Deshabilitar CSP para desarrollo
+    contentSecurityPolicy: false,
   }));
   
   // COMPRESIÓN: Para reducir tamaño de respuestas
   app.use(compression());
   
-  // RATE LIMITING CRÍTICO para 100k peticiones
-  const limiter = rateLimit({
-    windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS || '60000'), // 1 minuto
-    max: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS || '1000'),    // 1000 req/min por IP
-    message: {
-      error: 'Demasiadas peticiones desde esta IP',
-      retryAfter: 'Espera 1 minuto',
-      limit: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS || '1000'),
-    },
-    standardHeaders: true,
-    legacyHeaders: false,
-    // Excluir ciertos endpoints del rate limiting
-    skip: (request) => {
-      return request.url.includes('/admin/queues') || request.url.includes('/docs');
-    },
-  });
+  // ⚠️ RATE LIMITING DESHABILITADO PARA PRUEBAS MASIVAS
+  const isTestMode = process.env.DISABLE_RATE_LIMIT === 'true';
   
-  app.use(limiter);
+  if (!isTestMode) {
+    const limiter = rateLimit({
+      windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS || '60000'),
+      max: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS || '100000'),
+      message: {
+        error: 'Demasiadas peticiones desde esta IP',
+        retryAfter: 'Espera 1 minuto',
+        limit: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS || '100000'),
+      },
+      standardHeaders: true,
+      legacyHeaders: false,
+      skip: (request) => {
+        return request.url.includes('/admin/queues') || request.url.includes('/docs');
+      },
+    });
+    
+    app.use(limiter);
+    console.log(`⚠️ Rate limiting ACTIVO: ${process.env.RATE_LIMIT_MAX_REQUESTS || '100000'} req/min`);
+  } else {
+    console.log('🚫 Rate limiting DESHABILITADO para pruebas');
+  }
   
   // Establecer un prefijo global para las rutas
   app.setGlobalPrefix('api');
   
   // CORS optimizado para alta carga
   app.enableCors({
-    origin: process.env.ALLOWED_ORIGINS?.split(',') || '*',
+    origin: '*',
     methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
     credentials: true,
-    maxAge: 86400, // 24 horas de cache para preflight
+    maxAge: 86400,
   });
   
   // Pipes globales OPTIMIZADOS
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
-      forbidNonWhitelisted: true,
+      forbidNonWhitelisted: false,
       transform: true,
-      // Optimizaciones para alto rendimiento:
       transformOptions: {
         enableImplicitConversion: true,
       },
@@ -73,45 +79,65 @@ async function bootstrap() {
     }),
   );
   
-  // CONFIGURACIÓN DE BULL DASHBOARD
+  // CONFIGURACIÓN DE BULL DASHBOARD CON COLAS DINÁMICAS
   try {
     const serverAdapter = new ExpressAdapter();
     serverAdapter.setBasePath('/admin/queues');
     
-    const genericQueue = app.get<Queue>('BullQueue_generic-queue');
+    // Leer worker queues desde JSON
+    const configPath = path.join(process.cwd(), 'src', 'queue', 'queue-config.json');
+    const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
     
-    createBullBoard({
-      queues: [new BullAdapter(genericQueue)],
-      serverAdapter: serverAdapter,
-    });
+    // Obtener todas las colas Bull registradas
+    const queueAdapters: any[] = [];
     
-    const expressApp = app.getHttpAdapter().getInstance();
-    expressApp.use('/admin/queues', serverAdapter.getRouter());
+    for (const [name, _] of Object.entries(config.workerQueues)) {
+      try {
+        const queue = app.get<Queue>(`BullQueue_${name}`);
+        queueAdapters.push(new BullMQAdapter(queue));
+        console.log(`   ✅ Dashboard: ${name}`);
+      } catch (error) {
+        console.warn(`   ⚠️ Cola ${name} no disponible en dashboard`);
+      }
+    }
     
-    console.log(`📊 Bull Dashboard configurado correctamente`);
+    if (queueAdapters.length > 0) {
+      createBullBoard({
+        queues: queueAdapters,
+        serverAdapter: serverAdapter,
+      });
+      
+      const expressApp = app.getHttpAdapter().getInstance();
+      expressApp.use('/admin/queues', serverAdapter.getRouter());
+      
+      console.log(`📊 Bull Dashboard configurado con ${queueAdapters.length} colas`);
+    } else {
+      console.warn('⚠️ Bull Dashboard: No hay colas disponibles');
+    }
   } catch (error) {
     console.warn('⚠️ Bull Dashboard no se pudo configurar:', error.message);
   }
   
-  // Configuración de Swagger (solo en desarrollo)
-  if (process.env.NODE_ENV !== 'production') {
+  // Configuración de Swagger (deshabilitado para pruebas)
+  if (process.env.NODE_ENV !== 'production' && process.env.ENABLE_SWAGGER === 'true') {
     const config = new DocumentBuilder()
       .setTitle('Academic Service API')
-      .setDescription('API para gestión de contexto académico - Optimizado para 100k peticiones')
-      .setVersion('1.0')
+      .setDescription('API para gestión de contexto académico - Colas Dinámicas con Aislamiento')
+      .setVersion('2.0')
       .addBearerAuth()
       .build();
     const document = SwaggerModule.createDocument(app, config);
     SwaggerModule.setup('docs', app, document);
   }
   
-  // EJECUTAR SEEDERS (solo en desarrollo)
-  if (process.env.NODE_ENV === 'development') {
+  // SEEDERS DESHABILITADOS PARA PRUEBAS DE CARGA
+  if (process.env.RUN_SEEDS === 'true') {
     try {
       const seedService = app.get(SeedService);
       await seedService.runAllSeeds();
+      console.log('✅ Seeders ejecutados exitosamente');
     } catch (error) {
-      console.warn('⚠️ Seeders no ejecutados:', error.message);
+      console.error('❌ Error en seeders:', error.message);
     }
   }
   
@@ -119,16 +145,33 @@ async function bootstrap() {
   const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
   
   await app.listen(port, '0.0.0.0', () => {
-    console.log(`🚀 Academic Service (High Performance Mode)`);
+    console.log(`\n🚀 Academic Service v2.0 (DYNAMIC WORKER QUEUES)`);
     console.log(`📡 Port: ${port}`);
     console.log(`🔧 Environment: ${process.env.NODE_ENV}`);
     console.log(`📊 Bull Dashboard: http://localhost:${port}/admin/queues`);
-    console.log(`📝 Max requests per minute: ${process.env.RATE_LIMIT_MAX_REQUESTS || '1000'}`);
-    console.log(`⚡ Queue concurrency: ${process.env.QUEUE_CONCURRENCY || '5'}`);
-    console.log(`💾 DB Pool size: ${process.env.DATABASE_POOL_MAX || '20'}`);
     
-    if (process.env.NODE_ENV !== 'production') {
-      console.log(`📚 Swagger docs: http://localhost:${port}/docs`);
+    // Leer y mostrar configuración de worker queues
+    try {
+      const configPath = path.join(process.cwd(), 'src', 'queue', 'queue-config.json');
+      const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+      
+      console.log(`\n⚡ Worker Queues Activas:`);
+      Object.entries(config.workerQueues).forEach(([name, cfg]: any) => {
+        const status = cfg.concurrency === 0 ? '⏸️ PAUSADA' : `▶️ ${cfg.concurrency} workers`;
+        console.log(`   - ${name}: ${status} (${cfg.assignedServices.join(', ')})`);
+      });
+      
+      console.log(`\n💾 DB Pool size: ${process.env.DATABASE_POOL_MAX || '100'}`);
+      console.log(`🚫 Rate limiting: ${isTestMode ? 'DISABLED' : 'ENABLED'}`);
+      console.log(`\n📚 Documentación: http://localhost:${port}/docs`);
+      console.log(`\n✨ Características:`);
+      console.log(`   ✅ Colas Bull físicamente separadas`);
+      console.log(`   ✅ Verdadero aislamiento por worker queue`);
+      console.log(`   ✅ Concurrencia 0 = Cola pausada (no procesa)`);
+      console.log(`   ✅ Load balancer inteligente`);
+      console.log(`   ⚠️ Cambios estructurales requieren reinicio\n`);
+    } catch (error) {
+      console.warn('⚠️ No se pudo leer configuración de worker queues');
     }
   });
 }
