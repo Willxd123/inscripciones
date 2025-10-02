@@ -1,4 +1,4 @@
-import { ServiceLoadBalancerService } from './service-load-balancer.service';
+import { BalanceadorCargaService } from './balanceador-carga.service';
 import { DetalleInscripcionModule } from './../detalle-inscripcion/detalle-inscripcion.module';
 import { BoletaHorarioModule } from './../boleta-horario/boleta-horario.module';
 import { GestionModule } from './../gestion/gestion.module';
@@ -18,24 +18,24 @@ import { EstudianteModule } from './../estudiante/estudiante.module';
 import { PlanEstudioModule } from '../plan-estudio/plan-estudio.module';
 import { Module, forwardRef, DynamicModule, Global } from '@nestjs/common';
 import { BullModule } from '@nestjs/bullmq';
-import { QueueConfigService } from './queue-config.service';
-import { QueueController } from './queue.controller';
+import { ColaConfigService } from './cola-config.service';
+import { ColaController } from './cola.controller';
 import { AuthModule } from '../auth/auth.module';
-import { GenericQueueProcessor } from './generic-queue.processor';
-import { GenericWrapperService } from './generic-wrapper.service';
+import { ProcesadorColaGenerica } from './procesador-cola-generica.processor';
+import { EnvolventeGenericaService } from './envolvente-generica.service';
 import { CarreraModule } from '../carrera/carrera.module';
 import * as fs from 'fs';
 import * as path from 'path';
 
-@Global() // 🔥 NUEVO: Hacer el módulo global
+@Global()
 @Module({})
-export class QueueModule {
+export class ColaModule {
   static async forRoot(): Promise<DynamicModule> {
-    const config = await QueueModule.loadWorkerQueuesConfig();
+    const config = await ColaModule.cargarConfigColasHilos();
 
-    const bullQueueModules = config.workerQueues.map((wq) => {
+    const modulosColas = config.colasHilos.map((ch) => {
       return BullModule.registerQueue({
-        name: wq.name,
+        name: ch.nombre,
         defaultJobOptions: {
           removeOnComplete: false,
           removeOnFail: false,
@@ -48,14 +48,14 @@ export class QueueModule {
       });
     });
 
-    console.log(`📋 Registrando ${config.workerQueues.length} worker queues:`);
-    config.workerQueues.forEach((wq) => {
-      console.log(`   - ${wq.name} (${wq.concurrency} workers)`);
+    console.log(`📋 Registrando ${config.colasHilos.length} colas hilos:`);
+    config.colasHilos.forEach((ch) => {
+      console.log(`   - ${ch.nombre} (${ch.hilos} workers)`);
     });
 
     return {
-      global: true, // 🔥 NUEVO: Módulo global
-      module: QueueModule,
+      global: true,
+      module: ColaModule,
       imports: [
         BullModule.forRoot({
           connection: {
@@ -74,7 +74,7 @@ export class QueueModule {
             removeOnFail: false,
           },
         }),
-        ...bullQueueModules,
+        ...modulosColas,
         forwardRef(() => AuthModule),
         forwardRef(() => CarreraModule),
         forwardRef(() => PlanEstudioModule),
@@ -95,52 +95,52 @@ export class QueueModule {
         forwardRef(() => BoletaHorarioModule),
         forwardRef(() => DetalleInscripcionModule),
       ],
-      controllers: [QueueController],
+      controllers: [ColaController],
       providers: [
-        QueueConfigService,
-        GenericQueueProcessor,
-        GenericWrapperService,
-        ServiceLoadBalancerService,
+        ColaConfigService,
+        ProcesadorColaGenerica,
+        EnvolventeGenericaService,
+        BalanceadorCargaService,
       ],
       exports: [
-        QueueConfigService,
-        GenericWrapperService,
-        ServiceLoadBalancerService,
-        GenericQueueProcessor, // 🔥 NUEVO: Exportar también el processor
+        ColaConfigService,
+        EnvolventeGenericaService,
+        BalanceadorCargaService,
+        ProcesadorColaGenerica,
       ],
     };
   }
 
-  private static async loadWorkerQueuesConfig() {
-    const configPath = path.join(process.cwd(), 'src', 'queue', 'queue-config.json');
+  private static async cargarConfigColasHilos() {
+    const rutaConfig = path.join(process.cwd(), 'src', 'cola', 'cola-config.json');
 
     try {
-      const configContent = fs.readFileSync(configPath, 'utf8');
-      const config = JSON.parse(configContent);
+      const contenidoConfig = fs.readFileSync(rutaConfig, 'utf8');
+      const config = JSON.parse(contenidoConfig);
 
       return {
-        workerQueues: Object.entries(config.workerQueues).map(([name, cfg]: any) => ({
-          name,
-          concurrency: cfg.concurrency,
-          assignedServices: cfg.assignedServices,
-          enabled: cfg.enabled,
+        colasHilos: Object.entries(config.colasHilos).map(([nombre, cfg]: any) => ({
+          nombre,
+          hilos: cfg.hilos,
+          serviciosAsignados: cfg.serviciosAsignados,
+          habilitada: cfg.habilitada,
         })),
       };
     } catch (error) {
-      console.warn('⚠️ No se pudo cargar queue-config.json, usando configuración por defecto');
+      console.warn('⚠️ No se pudo cargar cola-config.json, usando configuración por defecto');
       return {
-        workerQueues: [
+        colasHilos: [
           {
-            name: 'worker-queue-1',
-            concurrency: 1,
-            assignedServices: ['carrera', 'estudiante', 'inscripcion'],
-            enabled: true,
+            nombre: 'cola-hilos-1',
+            hilos: 1,
+            serviciosAsignados: ['carrera', 'estudiante', 'inscripcion'],
+            habilitada: true,
           },
           {
-            name: 'worker-queue-2',
-            concurrency: 1,
-            assignedServices: ['*'],
-            enabled: true,
+            nombre: 'cola-hilos-2',
+            hilos: 1,
+            serviciosAsignados: ['*'],
+            habilitada: true,
           },
         ],
       };

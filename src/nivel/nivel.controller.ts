@@ -1,4 +1,4 @@
-import { GenericWrapperService } from './../queue/generic-wrapper.service';
+import { EnvolventeGenericaService } from './../cola/envolvente-generica.service';
 import { AuthGuard } from './../auth/guard/auth.guard';
 import {
   Controller,
@@ -20,9 +20,9 @@ import { ApiBearerAuth } from '@nestjs/swagger';
 @ApiBearerAuth()
 export class NivelController {
   private nivelWrapper: any;
-  constructor(private readonly genericWrapperService: GenericWrapperService) {
+  constructor(private readonly envolventeGenericaService: EnvolventeGenericaService) {
     this.nivelWrapper =
-      this.genericWrapperService.createServiceWrapper('nivel');
+      this.envolventeGenericaService.crearEnvolventeServicio('nivel');
   }
   @Post()
   create(@Body() createNivelDto: CreateNivelDto) {

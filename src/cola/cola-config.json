@@ -1,0 +1,123 @@
+{
+  "version": "1.0.0",
+  "ultimaActualizacion": "2025-10-02T04:50:17.765Z",
+  "metadatos": {
+    "totalServicios": 18,
+    "totalColasHilos": 4,
+    "hilosPorDefecto": 1
+  },
+  "servicios": {
+    "carrera": {
+      "usarCola": true,
+      "estaPausado": false
+    },
+    "plan-estudio": {
+      "usarCola": true,
+      "estaPausado": false
+    },
+    "estudiante": {
+      "usarCola": true,
+      "estaPausado": false
+    },
+    "inscripcion": {
+      "usarCola": true,
+      "estaPausado": false
+    },
+    "detalle-inscripcion": {
+      "usarCola": true,
+      "estaPausado": false
+    },
+    "aula": {
+      "usarCola": true,
+      "estaPausado": false
+    },
+    "boleta-horario": {
+      "usarCola": true,
+      "estaPausado": false
+    },
+    "docente": {
+      "usarCola": true,
+      "estaPausado": false
+    },
+    "gestion": {
+      "usarCola": true,
+      "estaPausado": false
+    },
+    "grupo": {
+      "usarCola": true,
+      "estaPausado": false
+    },
+    "grupo-materia": {
+      "usarCola": true,
+      "estaPausado": false
+    },
+    "horario": {
+      "usarCola": true,
+      "estaPausado": false
+    },
+    "materia": {
+      "usarCola": true,
+      "estaPausado": false
+    },
+    "modulo": {
+      "usarCola": true,
+      "estaPausado": false
+    },
+    "nivel": {
+      "usarCola": true,
+      "estaPausado": false
+    },
+    "nota": {
+      "usarCola": true,
+      "estaPausado": false
+    },
+    "periodo": {
+      "usarCola": true,
+      "estaPausado": false
+    },
+    "prerequisito": {
+      "usarCola": true,
+      "estaPausado": false
+    }
+  },
+  "colasHilos": {
+    "cola-1": {
+      "habilitada": false,
+      "hilos": 0,
+      "serviciosAsignados": [
+        "carrera",
+        "docente"
+      ],
+      "descripcion": "Cola prioritaria para operaciones críticas",
+      "creadoEn": "2025-01-25T10:30:00.000Z"
+    },
+    "cola-2": {
+      "habilitada": true,
+      "hilos": 2,
+      "serviciosAsignados": [
+        "*"
+      ],
+      "descripcion": "Cola general catch-all para resto de servicios",
+      "creadoEn": "2025-01-25T10:30:00.000Z"
+    },
+    "cola-3": {
+      "habilitada": false,
+      "hilos": 0,
+      "serviciosAsignados": [
+        "carrera",
+        "docente"
+      ],
+      "descripcion": "Worker queue con 0 workers",
+      "creadoEn": "2025-09-25T22:32:58.031Z"
+    },
+    "cola-6": {
+      "habilitada": true,
+      "hilos": 50,
+      "serviciosAsignados": [
+        "*"
+      ],
+      "descripcion": "Worker queue con 50 workers",
+      "creadoEn": "2025-09-30T23:34:21.482Z"
+    }
+  }
+}

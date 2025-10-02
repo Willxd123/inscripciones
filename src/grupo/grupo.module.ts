@@ -1,4 +1,4 @@
-import { QueueModule } from './../queue/queue.module';
+import { ColaModule } from './../cola/cola.module';
 import { AuthModule } from './../auth/auth.module';
 import { forwardRef, Module } from '@nestjs/common';
 import { GrupoService } from './grupo.service';
@@ -9,7 +9,7 @@ import { GrupoMateria } from '../grupo-materia/entities/grupo-materia.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Grupo, GrupoMateria]),forwardRef(() => AuthModule),forwardRef(() => QueueModule),
+    TypeOrmModule.forFeature([Grupo, GrupoMateria]),forwardRef(() => AuthModule),forwardRef(() => ColaModule),
   ],
   controllers: [GrupoController],
   providers: [GrupoService],

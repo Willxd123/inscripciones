@@ -1,4 +1,4 @@
-import { QueueModule } from './../queue/queue.module';
+import { ColaModule } from './../cola/cola.module';
 import { AuthModule } from './../auth/auth.module';
 import { forwardRef, Module } from '@nestjs/common';
 import { NotaService } from './nota.service';
@@ -12,7 +12,7 @@ import { GrupoMateria } from '../grupo-materia/entities/grupo-materia.entity';
   imports: [
     TypeOrmModule.forFeature([Nota, Estudiante, GrupoMateria]),
     forwardRef(() => AuthModule),
-    forwardRef(() => QueueModule),
+    forwardRef(() => ColaModule),
   ],
   controllers: [NotaController],
   providers: [NotaService],

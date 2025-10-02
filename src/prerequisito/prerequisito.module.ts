@@ -1,4 +1,4 @@
-import { QueueModule } from './../queue/queue.module';
+import { ColaModule } from './../cola/cola.module';
 import { AuthModule } from './../auth/auth.module';
 import { forwardRef, Module } from '@nestjs/common';
 import { PrerequisitoService } from './prerequisito.service';
@@ -12,7 +12,7 @@ import { Materia } from '../materia/entities/materia.entity';
   imports: [
     TypeOrmModule.forFeature([Prerequisito, Materia]),
     forwardRef(() => AuthModule),
-    forwardRef(() => QueueModule),
+    forwardRef(() => ColaModule),
   ],
   controllers: [PrerequisitoController],
   providers: [PrerequisitoService],

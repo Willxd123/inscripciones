@@ -31,25 +31,25 @@ async function bootstrap() {
   app.use(compression());
   
   // ⚠️ RATE LIMITING DESHABILITADO PARA PRUEBAS MASIVAS
-  const isTestMode = process.env.DISABLE_RATE_LIMIT === 'true';
+  const esModoTest = process.env.DISABLE_RATE_LIMIT === 'true';
   
-  if (!isTestMode) {
-    const limiter = rateLimit({
+  if (!esModoTest) {
+    const limitador = rateLimit({
       windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS || '60000'),
       max: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS || '100000'),
       message: {
         error: 'Demasiadas peticiones desde esta IP',
-        retryAfter: 'Espera 1 minuto',
-        limit: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS || '100000'),
+        reintentar: 'Espera 1 minuto',
+        limite: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS || '100000'),
       },
       standardHeaders: true,
       legacyHeaders: false,
       skip: (request) => {
-        return request.url.includes('/admin/queues') || request.url.includes('/docs');
+        return request.url.includes('/admin/colas') || request.url.includes('/docs');
       },
     });
     
-    app.use(limiter);
+    app.use(limitador);
     console.log(`⚠️ Rate limiting ACTIVO: ${process.env.RATE_LIMIT_MAX_REQUESTS || '100000'} req/min`);
   } else {
     console.log('🚫 Rate limiting DESHABILITADO para pruebas');
@@ -81,36 +81,36 @@ async function bootstrap() {
   
   // CONFIGURACIÓN DE BULL DASHBOARD CON COLAS DINÁMICAS
   try {
-    const serverAdapter = new ExpressAdapter();
-    serverAdapter.setBasePath('/admin/queues');
+    const adaptadorServidor = new ExpressAdapter();
+    adaptadorServidor.setBasePath('/admin/colas');
     
-    // Leer worker queues desde JSON
-    const configPath = path.join(process.cwd(), 'src', 'queue', 'queue-config.json');
-    const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+    // Leer colas hilos desde JSON
+    const rutaConfig = path.join(process.cwd(), 'src', 'cola', 'cola-config.json');
+    const config = JSON.parse(fs.readFileSync(rutaConfig, 'utf8'));
     
     // Obtener todas las colas Bull registradas
-    const queueAdapters: any[] = [];
+    const adaptadoresCola: any[] = [];
     
-    for (const [name, _] of Object.entries(config.workerQueues)) {
+    for (const [nombre, _] of Object.entries(config.colasHilos)) {
       try {
-        const queue = app.get<Queue>(`BullQueue_${name}`);
-        queueAdapters.push(new BullMQAdapter(queue));
-        console.log(`   ✅ Dashboard: ${name}`);
+        const cola = app.get<Queue>(`BullQueue_${nombre}`);
+        adaptadoresCola.push(new BullMQAdapter(cola));
+        console.log(`   ✅ Dashboard: ${nombre}`);
       } catch (error) {
-        console.warn(`   ⚠️ Cola ${name} no disponible en dashboard`);
+        console.warn(`   ⚠️ Cola ${nombre} no disponible en dashboard`);
       }
     }
     
-    if (queueAdapters.length > 0) {
+    if (adaptadoresCola.length > 0) {
       createBullBoard({
-        queues: queueAdapters,
-        serverAdapter: serverAdapter,
+        queues: adaptadoresCola,
+        serverAdapter: adaptadorServidor,
       });
       
       const expressApp = app.getHttpAdapter().getInstance();
-      expressApp.use('/admin/queues', serverAdapter.getRouter());
+      expressApp.use('/admin/colas', adaptadorServidor.getRouter());
       
-      console.log(`📊 Bull Dashboard configurado con ${queueAdapters.length} colas`);
+      console.log(`📊 Bull Dashboard configurado con ${adaptadoresCola.length} colas`);
     } else {
       console.warn('⚠️ Bull Dashboard: No hay colas disponibles');
     }
@@ -145,33 +145,33 @@ async function bootstrap() {
   const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
   
   await app.listen(port, '0.0.0.0', () => {
-    console.log(`\n🚀 Academic Service v2.0 (DYNAMIC WORKER QUEUES)`);
-    console.log(`📡 Port: ${port}`);
-    console.log(`🔧 Environment: ${process.env.NODE_ENV}`);
-    console.log(`📊 Bull Dashboard: http://localhost:${port}/admin/queues`);
+    console.log(`\n🚀 Academic Service v2.0 (COLAS HIJO DINÁMICAS)`);
+    console.log(`📡 Puerto: ${port}`);
+    console.log(`🔧 Entorno: ${process.env.NODE_ENV}`);
+    console.log(`📊 Bull Dashboard: http://localhost:${port}/admin/colas`);
     
-    // Leer y mostrar configuración de worker queues
+    // Leer y mostrar configuración de colas hilos
     try {
-      const configPath = path.join(process.cwd(), 'src', 'queue', 'queue-config.json');
-      const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+      const rutaConfig = path.join(process.cwd(), 'src', 'cola', 'cola-config.json');
+      const config = JSON.parse(fs.readFileSync(rutaConfig, 'utf8'));
       
-      console.log(`\n⚡ Worker Queues Activas:`);
-      Object.entries(config.workerQueues).forEach(([name, cfg]: any) => {
-        const status = cfg.concurrency === 0 ? '⏸️ PAUSADA' : `▶️ ${cfg.concurrency} workers`;
-        console.log(`   - ${name}: ${status} (${cfg.assignedServices.join(', ')})`);
+      console.log(`\n⚡ Colas Hilos Activas:`);
+      Object.entries(config.colasHilos).forEach(([nombre, cfg]: any) => {
+        const estado = cfg.hilos === 0 ? '⏸️ PAUSADA' : `▶️ ${cfg.hilos} workers`;
+        console.log(`   - ${nombre}: ${estado} (${cfg.serviciosAsignados.join(', ')})`);
       });
       
       console.log(`\n💾 DB Pool size: ${process.env.DATABASE_POOL_MAX || '100'}`);
-      console.log(`🚫 Rate limiting: ${isTestMode ? 'DISABLED' : 'ENABLED'}`);
+      console.log(`🚫 Rate limiting: ${esModoTest ? 'DISABLED' : 'ENABLED'}`);
       console.log(`\n📚 Documentación: http://localhost:${port}/docs`);
       console.log(`\n✨ Características:`);
       console.log(`   ✅ Colas Bull físicamente separadas`);
-      console.log(`   ✅ Verdadero aislamiento por worker queue`);
-      console.log(`   ✅ Concurrencia 0 = Cola pausada (no procesa)`);
-      console.log(`   ✅ Load balancer inteligente`);
+      console.log(`   ✅ Verdadero aislamiento por cola hilos`);
+      console.log(`   ✅ Hilos 0 = Cola pausada (no procesa)`);
+      console.log(`   ✅ Balanceador de carga inteligente`);
       console.log(`   ⚠️ Cambios estructurales requieren reinicio\n`);
     } catch (error) {
-      console.warn('⚠️ No se pudo leer configuración de worker queues');
+      console.warn('⚠️ No se pudo leer configuración de colas hilos');
     }
   });
 }

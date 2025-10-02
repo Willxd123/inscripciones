@@ -1,4 +1,4 @@
-import { GenericWrapperService } from './../queue/generic-wrapper.service';
+import { EnvolventeGenericaService } from './../cola/envolvente-generica.service';
 import {
   Controller,
   Get,
@@ -16,9 +16,9 @@ import { UpdateDetalleInscripcionDto } from './dto/update-detalle-inscripcion.dt
 export class DetalleInscripcionController {
   private detalleInscripcionWrapper: any;
 
-  constructor(private readonly genericWrapperService: GenericWrapperService) {
+  constructor(private readonly envolventeGenericaService: EnvolventeGenericaService) {
     this.detalleInscripcionWrapper =
-      this.genericWrapperService.createServiceWrapper('detalle-inscripcion');
+      this.envolventeGenericaService.crearEnvolventeServicio('detalle-inscripcion');
   }
   @Post()
   create(@Body() createDetalleInscripcionDto: CreateDetalleInscripcionDto) {

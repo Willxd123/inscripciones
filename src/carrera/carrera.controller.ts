@@ -9,7 +9,7 @@ import {
   Delete,
   UseGuards,
 } from '@nestjs/common';
-import { GenericWrapperService } from '../queue/generic-wrapper.service';
+import { EnvolventeGenericaService } from './../cola/envolvente-generica.service';
 import { CreateCarreraDto } from './dto/create-carrera.dto';
 import { UpdateCarreraDto } from './dto/update-carrera.dto';
 import { ApiBearerAuth } from '@nestjs/swagger';
@@ -20,9 +20,9 @@ import { ApiBearerAuth } from '@nestjs/swagger';
 export class CarreraController {
   private carreraWrapper: any;
 
-  constructor(private readonly genericWrapperService: GenericWrapperService) {
+  constructor(private readonly envolventeGenericaService: EnvolventeGenericaService) {
     // Crear wrapper específico para carrera usando el factory genérico
-    this.carreraWrapper = this.genericWrapperService.createServiceWrapper('carrera');
+    this.carreraWrapper = this.envolventeGenericaService.crearEnvolventeServicio('carrera');
   }
 
   @Post()
